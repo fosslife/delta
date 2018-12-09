@@ -2,10 +2,12 @@ const app = require('express')();
 const path = require('path');
 const multer = require('multer');
 const shortid = require('shortid');
+const fs = require('fs');
 
-var storage = multer.diskStorage({
+
+const storage = multer.diskStorage({
     destination: 'uploads',
-    filename: function(req, file, cb){
+    filename: function (req, file, cb) {
         const id = shortid.generate();
         file.url = id;
         cb(null, id + path.extname(file.originalname))
@@ -16,15 +18,36 @@ const upload = multer({
     storage
 }).single('file');
 
-app.post('/upload', (req, res)=>{
-    upload(req, res, function(err){
-        if(err){
-            res.json({key: 'Something went wrong', err });
+app.post('/upload', (req, res) => {
+    upload(req, res, function (err) {
+        if (err) {
+            res.json({ key: 'Something went wrong', err });
         }
+        // console.log("Req", req.file);
         const url = req.file.url;
-        console.log("Req", url);
-        res.json({url:'http://i.sprk.pw/'+ url});
+        res.json({ url: 'http://localhost:3000/' + url });
     });
+});
+
+app.get('/favicon.ico', (req, res) => res.sendFile(path.resolve(__dirname, 'favicon.ico')));
+
+app.get('*', (req, res, next) => {
+    const originalFile = req.originalUrl.split('/')[1];
+
+    const files = fs.readdirSync(__dirname + "/uploads");
+
+    for (file of files) {
+        const splitted = file.split('.')[0];
+        if (splitted === originalFile) {
+            res.sendFile(path.resolve(__dirname, 'uploads', file), (err) => {
+                if (err) {
+                    next(err);
+                } else {
+                    console.log("File sent", file);
+                }
+            });
+        } 
+    }
 });
 
 
