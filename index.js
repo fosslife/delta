@@ -5,6 +5,13 @@ const path = require('path');
 const fs = require('fs');
 const { upload } = require('./diskstorage');
 
+// CONSTANTS:
+const MIN_AGE = 1; // DAYS
+const MAX_AGE = 30; // DAYS
+const MAX_SIZE = 2000; // 2MB
+
+console.log('\n'.repeat(25));
+
 app.post('/upload', (req, res) => {
     upload(req, res, function (err) {
         if (err) {
@@ -24,15 +31,18 @@ app.get('/del', (req, res) => {
     const files = fs.readdirSync(uploadsDir);
     files.forEach(function (file, index) {
         const stat = fs.statSync(path.join(uploadsDir, file));
-        unsorted.push({ file, size: stat.size, date: stat.ctime });
+        const retention = MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
+        console.log('retension for', file, 'is', retention);
+        unsorted.push({ file, size: parseInt(stat.size / 1000.0), date: stat.ctime, retention: parseInt(retention) }); // convert size to KB. use 1000000 for MB.
     });
-    console.log('Original\n', unsorted, '\n\n');
     const sorted = sort(unsorted);
     console.log(sorted);
+    res.end(sorted.toString());
+
 });
 
 function sort (arr) {
-    return [...arr].sort((a, b) => a.size - b.size);
+    return [...arr].sort((a, b) => a.retention > b.retention ? 1 : b.retention > a.retention ? -1 : 0);
 }
 
 app.get('*', (req, res, next) => {
