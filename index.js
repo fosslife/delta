@@ -11,7 +11,36 @@ const MIN_AGE = 1; // DAYS
 const MAX_AGE = 30; // DAYS
 const MAX_SIZE = 2000; // 2MB
 
-console.log('\n'.repeat(25));
+/**
+ * Cron job runs every At 04:05 on Sunday. (randon yes)
+ */
+const job = new CronJob('5 4 * * sun', () => {
+    const uploadsDir = path.resolve(__dirname, 'uploads');
+    let unsorted = [];
+    const files = fs.readdirSync(uploadsDir);
+    files.forEach(function (file, index) {
+        const stat = fs.statSync(path.join(uploadsDir, file));
+        const retention = MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
+        // console.log('retention for', file, 'is', retention);
+        unsorted.push({ file, size: parseInt(stat.size / 1000.0), date: stat.mtime, retention: parseInt(retention) }); // convert size to KB. use 1000000 for MB.
+    });
+    // console.log(sorted);
+    unsorted.forEach((file) => {
+        const diff = differenceInDays(new Date(), file.date);
+        console.log(diff, file.retention);
+        if (diff > file.retention) {
+            // console.log('deleting', file);
+            fs.unlink(path.resolve(uploadsDir, file.file), (err) => {
+                if (err) {
+                    console.log('Error while deleting', err);
+                }
+                console.log('Successsfully deleted the file', file.file);
+            });
+        }
+    });
+}, null, false, 'Asia/Kolkata');
+
+job.start();
 
 app.post('/upload', (req, res) => {
     upload(req, res, function (err) {
@@ -25,29 +54,6 @@ app.post('/upload', (req, res) => {
 });
 
 app.get('/favicon.ico', (req, res) => res.sendFile(path.resolve(__dirname, 'favicon.ico')));
-
-app.get('/del', (req, res) => {
-    const uploadsDir = path.resolve(__dirname, 'uploads');
-    let unsorted = [];
-    const files = fs.readdirSync(uploadsDir);
-    files.forEach(function (file, index) {
-        const stat = fs.statSync(path.join(uploadsDir, file));
-        const retention = MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
-        console.log('retention for', file, 'is', retention);
-        unsorted.push({ file, size: parseInt(stat.size / 1000.0), date: stat.ctime, retention: parseInt(retention) }); // convert size to KB. use 1000000 for MB.
-    });
-    const sorted = sort(unsorted);
-    console.log(sorted);
-    sorted.forEach((file) => {
-        // console.log(differenceInDays(new Date(), file.date));
-    });
-    res.json(sorted);
-
-});
-
-function sort(arr) {
-    return [...arr].sort((a, b) => a.retention > b.retention ? 1 : b.retention > a.retention ? -1 : 0);
-}
 
 app.get('/:file', (req, res, next) => {
     const originalFile = req.params.file;
