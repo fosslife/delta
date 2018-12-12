@@ -1,35 +1,36 @@
 'use strict';
-
+/**
+ * Imports
+ */
 const app = require('express')();
 const path = require('path');
 const fs = require('fs');
 const { upload } = require('./diskstorage');
 const { CronJob } = require('cron');
 const { differenceInDays } = require('date-fns');
-// CONSTANTS:
+/**
+ * Constants
+ */
 const MIN_AGE = 1; // DAYS
 const MAX_AGE = 30; // DAYS
 const MAX_SIZE = 2000; // 2MB
+const DOMAIN = 'http://localhost:3000/'; // Mind the training slash (/)
 
 /**
- * Cron job runs every At 04:05 on Sunday. (randon yes)
+ * Cron job runs every At 04:05 on Sunday. (random, yes)
  */
 const job = new CronJob('5 4 * * sun', () => {
     const uploadsDir = path.resolve(__dirname, 'uploads');
-    let unsorted = [];
+    let filesMetadata = [];
     const files = fs.readdirSync(uploadsDir);
     files.forEach(function (file, index) {
         const stat = fs.statSync(path.join(uploadsDir, file));
         const retention = MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
-        // console.log('retention for', file, 'is', retention);
-        unsorted.push({ file, size: parseInt(stat.size / 1000.0), date: stat.mtime, retention: parseInt(retention) }); // convert size to KB. use 1000000 for MB.
+        filesMetadata.push({ file, size: parseInt(stat.size / 1000.0), date: stat.mtime, retention: parseInt(retention) }); // convert size to KB. use 1000000 for MB.
     });
-    // console.log(sorted);
-    unsorted.forEach((file) => {
+    filesMetadata.forEach((file) => {
         const diff = differenceInDays(new Date(), file.date);
-        console.log(diff, file.retention);
         if (diff > file.retention) {
-            // console.log('deleting', file);
             fs.unlink(path.resolve(uploadsDir, file.file), (err) => {
                 if (err) {
                     console.log('Error while deleting', err);
@@ -38,18 +39,20 @@ const job = new CronJob('5 4 * * sun', () => {
             });
         }
     });
-}, null, false, 'Asia/Kolkata');
+}, null, false, 'Asia/Kolkata'); // Also exposes .start() chained method
 
 job.start();
-
-app.post('/upload', (req, res) => {
+/**
+ * POST method to upload file
+ */
+app.post('/', (req, res) => {
     upload(req, res, function (err) {
         if (err) {
             res.json({ key: 'Something went wrong', err });
         }
         // console.log("Req", req.file);
-        const url = req.file.url;
-        res.json({ url: 'http://localhost:3000/' + url });
+        const url = `${DOMAIN}${req.file.url}`;
+        res.end(url);
     });
 });
 
@@ -67,11 +70,11 @@ app.get('/:file', (req, res, next) => {
                 if (err) {
                     next(err);
                 } else {
-                    console.log('File sent', file);
+                    console.log(`File sent`, file);
                 }
             });
         }
     }
 });
 
-app.listen(3000, () => console.log('http://localhost:3000/'));
+app.listen(3000, () => console.log(`Server started at ${DOMAIN}`));
