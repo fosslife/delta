@@ -26,14 +26,19 @@ const job = new CronJob('5 4 * * sun', () => {
     files.forEach(function (file, index) {
         const stat = fs.statSync(path.join(uploadsDir, file));
         const retention = MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
-        filesMetadata.push({ file, size: parseInt(stat.size / 1000.0), date: stat.mtime, retention: parseInt(retention) }); // convert size to KB. use 1000000 for MB.
+        filesMetadata.push({
+            file,
+            size: parseInt(stat.size / 1000.0),
+            date: stat.mtime,
+            retention: parseInt(retention),
+        }); // convert size to KB. use 1000000 for MB.
     });
     filesMetadata.forEach((file) => {
         const diff = differenceInDays(new Date(), file.date);
         if (diff > file.retention) {
             fs.unlink(path.resolve(uploadsDir, file.file), (err) => {
                 if (err) {
-                    console.log('Error while deleting', err);
+                    console.error('Error while deleting', err);
                 }
                 console.log('Successsfully deleted the file', file.file);
             });
@@ -50,7 +55,6 @@ app.post('/', (req, res) => {
         if (err) {
             res.json({ key: 'Something went wrong', err });
         }
-        // console.log("Req", req.file);
         const url = `${DOMAIN}${req.file.url}`;
         res.end(url);
     });
@@ -59,22 +63,19 @@ app.post('/', (req, res) => {
 app.get('/favicon.ico', (req, res) => res.sendFile(path.resolve(__dirname, 'favicon.ico')));
 
 app.get('/:file', (req, res, next) => {
-    const originalFile = req.params.file;
-
-    const files = fs.readdirSync(path.resolve(__dirname, 'uploads'));
-
-    for (let file of files) {
-        const splitted = file.split('.')[0];
-        if (splitted === originalFile) {
-            res.sendFile(path.resolve(__dirname, 'uploads', file), err => {
-                if (err) {
-                    next(err);
-                } else {
-                    console.log(`File sent`, file);
-                }
-            });
+    const requestedFile = req.params.file;
+    fs.readFile(path.resolve(__dirname, 'uploads', requestedFile), readErr => {
+        if (readErr) {
+            console.error('File reading Error', readErr);
+            res.end('File not found');
         }
-    }
+        res.sendFile(path.resolve(__dirname, 'uploads', requestedFile), err => {
+            if (err) {
+                console.error('Error while sending the file', err);
+                res.end('Cannot send the specified file');
+            }
+        });
+    });
 });
 
 app.listen(3000, () => console.log(`Server started at ${DOMAIN}`));
