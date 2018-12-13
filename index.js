@@ -8,6 +8,7 @@ const fs = require('fs');
 const { upload } = require('./diskstorage');
 const { CronJob } = require('cron');
 const { differenceInDays } = require('date-fns');
+const { auth: { API_KEY } } = require('./config');
 /**
  * Constants
  */
@@ -51,31 +52,49 @@ job.start();
  * POST method to upload file
  */
 app.post('/', (req, res) => {
-    upload(req, res, function (err) {
-        if (err) {
-            res.json({ key: 'Something went wrong', err });
-        }
-        const url = `${DOMAIN}${req.file.url}`;
-        res.end(url);
-    });
+    const API_KEY_HEADER = req.get('x-api-key');
+    if (!API_KEY_HEADER) {
+        res.sendStatus(401);
+        res.end();
+    } else if (API_KEY_HEADER !== API_KEY) {
+        res.sendStatus(403);
+        res.end();
+    } else {
+        upload(req, res, function (err) {
+            if (err) {
+                res.json({ key: 'Something went wrong', err });
+            }
+            const url = `${DOMAIN}${req.file.url}`;
+            res.end(url);
+        });
+    }
 });
 
 app.get('/favicon.ico', (req, res) => res.sendFile(path.resolve(__dirname, 'favicon.ico')));
 
 app.get('/:file', (req, res, next) => {
-    const requestedFile = req.params.file;
-    fs.readFile(path.resolve(__dirname, 'uploads', requestedFile), readErr => {
-        if (readErr) {
-            console.error('File reading Error', readErr);
-            res.end('File not found');
-        }
-        res.sendFile(path.resolve(__dirname, 'uploads', requestedFile), err => {
-            if (err) {
-                console.error('Error while sending the file', err);
-                res.end('Cannot send the specified file');
+    const API_KEY_HEADER = req.get('x-api-key');
+    if (!API_KEY_HEADER) {
+        res.sendStatus(401);
+        res.end();
+    } else if (API_KEY_HEADER !== API_KEY) {
+        res.sendStatus(403);
+        res.end();
+    } else {
+        const requestedFile = req.params.file;
+        fs.readFile(path.resolve(__dirname, 'uploads', requestedFile), readErr => {
+            if (readErr) {
+                console.error('File reading Error', readErr);
+                res.end('File not found');
             }
+            res.sendFile(path.resolve(__dirname, 'uploads', requestedFile), err => {
+                if (err) {
+                    console.error('Error while sending the file', err);
+                    res.end('Cannot send the specified file');
+                }
+            });
         });
-    });
+    }
 });
 
 app.listen(3000, () => console.log(`Server started at ${DOMAIN}`));
