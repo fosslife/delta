@@ -3,6 +3,7 @@
     "rules": {
         "indent" : ["error", 4],
         "semi" : ["error", "always"],
-        "comma-dangle" : "off"
+        "comma-dangle" : "off",
+        "space-before-function-paren": "off"
     }
 }
