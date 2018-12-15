@@ -8,14 +8,14 @@ const path = require('path');
 const fs = require('fs');
 const { upload } = require('./diskstorage');
 const job = require('./core/cron');
-const { env } = require('./config');
+const { env, domainUrl } = require('./config');
 const isAuthorizedUser = require('./core/isAuthorizedUser');
 const { promisify } = require('util');
 const morgan = require('morgan');
 /**
  * Constants
  */
-const DOMAIN = 'http://localhost:3000/'; // Mind the training slash (/)
+const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/'; // Mind the training slash (/)
 
 const readFileAsync = promisify(fs.readFile);
 
@@ -28,7 +28,7 @@ const uploadsPath = (childPath = '') => {
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
 app.use(morgan('combined', { stream: accessLogStream }));
 
-if (env === 'PRODUCTION') {
+if (env === 'PROD') {
     job.start();
 }
 /**
@@ -42,7 +42,7 @@ app.post('/', (req, res) => {
             if (err) {
                 res.json({ key: 'Something went wrong', err });
             }
-            const url = `${DOMAIN}${req.file.url}`;
+            const url = `${DOMAIN}${req.file.url}\n`;
             res.end(url);
         });
     } else {

@@ -2,5 +2,6 @@
     "auth" : {
         "API_KEY" : "allQh6N9W0C96adCEwOblFOvfA0XqQTi"
     },
-    "env" : "DEVELOPMENT"
+    "env" : "DEVELOPMENT",
+    "domainUrl" : "sprk.pw"
 }
