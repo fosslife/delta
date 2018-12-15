@@ -11,6 +11,7 @@ const { CronJob } = require('cron');
 const { differenceInDays } = require('date-fns');
 const { auth: { API_KEY }, env } = require('./config');
 const { promisify } = require('util');
+const morgan = require('morgan');
 /**
  * Constants
  */
@@ -52,6 +53,10 @@ function isAuthorizedUser(currentKey) {
         return 200;
     }
 }
+
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
+app.use(morgan('combined', { stream: accessLogStream }));
+
 /**
  * Cron job runs every At 04:05 on Sunday. (random, yes)
  */
@@ -99,7 +104,7 @@ app.post('/', (req, res) => {
     }
 });
 
-app.get('/favicon.ico', (req, res) => res.sendFile(path.resolve(__dirname, 'favicon.ico')));
+app.get('/favicon.ico', (req, res) => res.sendFile(uploadsPath('../favicon.ico')));
 
 app.get('/:file', (req, res, next) => {
     console.log(req.params);
@@ -112,6 +117,7 @@ app.get('/:file', (req, res, next) => {
                 })
                 .catch(fileUploadError => {
                     console.error('Error while sending the file', fileUploadError);
+                    res.end('Error while sending file, please contact admin');
                 });
         })
         .catch(readErr => {
