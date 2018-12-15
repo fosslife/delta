@@ -2,13 +2,14 @@
 /**
  * Imports
  */
-const app = require('express')();
+const express = require('express');
+const app = express();
 const path = require('path');
 const fs = require('fs');
 const { upload } = require('./diskstorage');
 const { CronJob } = require('cron');
 const { differenceInDays } = require('date-fns');
-const { auth: { API_KEY } } = require('./config');
+const { auth: { API_KEY }, env } = require('./config');
 const { promisify } = require('util');
 /**
  * Constants
@@ -21,6 +22,7 @@ const DOMAIN = 'http://localhost:3000/'; // Mind the training slash (/)
 const readFileAsync = promisify(fs.readFile);
 const readDirAsync = promisify(fs.readdir);
 const deleteAsync = promisify(fs.unlink);
+express.response.sendFile = promisify(express.response.sendFile);
 
 function getRetentionPeriod(stat) {
     return MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
@@ -75,12 +77,14 @@ const job = new CronJob('5 4 * * sun', () => {
         });
 }, null, false, 'Asia/Kolkata'); // Also exposes .start() chained method
 
-job.start();
+if (env === 'PRODUCTION') {
+    job.start();
+}
 /**
  * POST method to upload file
  */
 app.post('/', (req, res) => {
-    const API_KEY_HEADER = req.get('x-api-key');
+    const API_KEY_HEADER = req.get('api-key');
     const responseStatus = isAuthorizedUser(API_KEY_HEADER);
     if (responseStatus === 200) {
         upload(req, res, function (err) {
@@ -95,29 +99,25 @@ app.post('/', (req, res) => {
     }
 });
 
-app.get('/favicon.ico', (req, res) => res.sendFile(uploadsPath('favicon.ico')));
+app.get('/favicon.ico', (req, res) => res.sendFile(path.resolve(__dirname, 'favicon.ico')));
 
 app.get('/:file', (req, res, next) => {
-    const API_KEY_HEADER = req.get('x-api-key');
-    const responseStatus = isAuthorizedUser(API_KEY_HEADER);
-    if (responseStatus === 200) {
-        const requestedFile = req.params.file;
-        readFileAsync(uploadsPath(requestedFile))
-            .then(() => {
-                res.sendFile(uploadsPath(requestedFile), err => {
-                    if (err) {
-                        console.error('Error while sending the file', err);
-                        res.end('Cannot send the specified file');
-                    }
+    console.log(req.params);
+    const requestedFile = req.params.file;
+    readFileAsync(uploadsPath(requestedFile))
+        .then(() => {
+            res.sendFile(uploadsPath(requestedFile))
+                .then(() => {
+                    console.log('File sent');
+                })
+                .catch(fileUploadError => {
+                    console.error('Error while sending the file', fileUploadError);
                 });
-            })
-            .catch(readErr => {
-                console.error('File reading Error', readErr);
-                res.end('File not found');
-            });
-    } else {
-        res.sendStatus(responseStatus).end();
-    }
+        })
+        .catch(readErr => {
+            console.error('File reading Error', readErr);
+            res.end('File not found');
+        });
 });
 
 app.listen(3000, () => console.log(`Server started at ${DOMAIN}`));
