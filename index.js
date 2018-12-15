@@ -25,15 +25,15 @@ const readDirAsync = promisify(fs.readdir);
 const deleteAsync = promisify(fs.unlink);
 express.response.sendFile = promisify(express.response.sendFile);
 
-function getRetentionPeriod(stat) {
+const getRetentionPeriod = stat => {
     return MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
-}
+};
 
-function uploadsPath(childPath = '') {
+const uploadsPath = (childPath = '') => {
     return path.resolve(__dirname, 'uploads', childPath);
-}
+};
 
-function getFileStats(file) {
+const getFileStats = file => {
     const stat = fs.statSync(path.join(uploadsPath(), file));
     const retention = getRetentionPeriod(stat);
     return {
@@ -42,9 +42,9 @@ function getFileStats(file) {
         date: stat.mtime,
         retention: parseInt(retention),
     };
-}
+};
 
-function isAuthorizedUser(currentKey) {
+const isAuthorizedUser = currentKey => {
     if (!currentKey) {
         return 401;
     } else if (currentKey !== API_KEY) {
@@ -52,7 +52,7 @@ function isAuthorizedUser(currentKey) {
     } else {
         return 200;
     }
-}
+};
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
 app.use(morgan('combined', { stream: accessLogStream }));
