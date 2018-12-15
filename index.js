@@ -7,41 +7,21 @@ const app = express();
 const path = require('path');
 const fs = require('fs');
 const { upload } = require('./diskstorage');
-const { CronJob } = require('cron');
-const { differenceInDays } = require('date-fns');
+const job = require('./core/cron');
 const { auth: { API_KEY }, env } = require('./config');
 const { promisify } = require('util');
 const morgan = require('morgan');
 /**
  * Constants
  */
-const MIN_AGE = 1; // DAYS
-const MAX_AGE = 30; // DAYS
-const MAX_SIZE = 2000; // 2MB
 const DOMAIN = 'http://localhost:3000/'; // Mind the training slash (/)
 
 const readFileAsync = promisify(fs.readFile);
-const readDirAsync = promisify(fs.readdir);
-const deleteAsync = promisify(fs.unlink);
-express.response.sendFile = promisify(express.response.sendFile);
 
-const getRetentionPeriod = stat => {
-    return MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
-};
+express.response.sendFile = promisify(express.response.sendFile);
 
 const uploadsPath = (childPath = '') => {
     return path.resolve(__dirname, 'uploads', childPath);
-};
-
-const getFileStats = file => {
-    const stat = fs.statSync(path.join(uploadsPath(), file));
-    const retention = getRetentionPeriod(stat);
-    return {
-        file,
-        size: parseInt(stat.size / 1000.0),
-        date: stat.mtime,
-        retention: parseInt(retention),
-    };
 };
 
 const isAuthorizedUser = currentKey => {
@@ -56,31 +36,6 @@ const isAuthorizedUser = currentKey => {
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
 app.use(morgan('combined', { stream: accessLogStream }));
-
-/**
- * Cron job runs every At 04:05 on Sunday. (random, yes)
- */
-const job = new CronJob('5 4 * * sun', () => {
-    readDirAsync(uploadsPath())
-        .then(files => {
-            files.map(file => {
-                return getFileStats(file);
-            }).map(file => {
-                const diff = differenceInDays(new Date(), file.date);
-                if (diff > file.retention) {
-                    deleteAsync(uploadsPath(file.file))
-                        .then(() => {
-                            console.log('Successsfully deleted the file', file.file);
-                        }).catch(err => {
-                            console.error('Error while deleting', err);
-                        });
-                }
-            });
-        })
-        .catch(err => {
-            console.error('Error in directory reading', err);
-        });
-}, null, false, 'Asia/Kolkata'); // Also exposes .start() chained method
 
 if (env === 'PRODUCTION') {
     job.start();
