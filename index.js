@@ -8,7 +8,8 @@ const path = require('path');
 const fs = require('fs');
 const { upload } = require('./diskstorage');
 const job = require('./core/cron');
-const { auth: { API_KEY }, env } = require('./config');
+const { env } = require('./config');
+const isAuthorizedUser = require('./core/isAuthorizedUser');
 const { promisify } = require('util');
 const morgan = require('morgan');
 /**
@@ -22,16 +23,6 @@ express.response.sendFile = promisify(express.response.sendFile);
 
 const uploadsPath = (childPath = '') => {
     return path.resolve(__dirname, 'uploads', childPath);
-};
-
-const isAuthorizedUser = currentKey => {
-    if (!currentKey) {
-        return 401;
-    } else if (currentKey !== API_KEY) {
-        return 403;
-    } else {
-        return 200;
-    }
 };
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
@@ -55,7 +46,7 @@ app.post('/', (req, res) => {
             res.end(url);
         });
     } else {
-        res.sendStatus(responseStatus).end();
+        responseStatus === 401 ? res.status(responseStatus).send('Unauthorized \n') : res.status(responseStatus).send('Forbidden \n');
     }
 });
 
