@@ -25,7 +25,7 @@ const uploadsPath = (childPath = '') => {
     return path.resolve(__dirname, 'uploads', childPath);
 };
 
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' });
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'storage', 'access.log'), { flags: 'a' });
 app.use(morgan('combined', { stream: accessLogStream }));
 
 if (env === 'PROD') {
