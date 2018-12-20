@@ -77,4 +77,14 @@ app.get('/:file', (req, res, next) => {
         });
 });
 
+// const server = 
 app.listen(3000, () => console.log(`Server started at ${DOMAIN}`));
+
+// let connections = [];
+
+// server.on('connection', connection => {
+//     connections.push(connection);
+//     connection.on('close', () => {
+//         connections = connections.filter(curr => curr !== connection);
+//     });
+// });
