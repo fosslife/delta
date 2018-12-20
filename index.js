@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const fs = require('fs');
-const { upload } = require('./diskstorage');
+const { upload } = require('./core/diskstorage');
 const job = require('./core/cron');
 const { env, domainUrl } = require('./config');
 const isAuthorizedUser = require('./core/isAuthorizedUser');
@@ -40,7 +40,8 @@ app.post('/', (req, res) => {
     if (responseStatus === 200) {
         upload(req, res, function (err) {
             if (err) {
-                res.json({ key: 'Something went wrong', err });
+                console.error('Error while uploading the file', err);
+                res.end('Something went wrong while uploading the file');
             }
             const url = `${DOMAIN}${req.file.url}\n`;
             res.end(url);

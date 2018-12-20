@@ -1,3 +1,5 @@
+'use strict';
+
 const { auth: { API_KEY } } = require('../config');
 
 const isAuthorizedUser = currentKey => {
