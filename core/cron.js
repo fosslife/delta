@@ -1,3 +1,5 @@
+'use strict';
+
 const { promisify } = require('util');
 const fs = require('fs');
 const readDirAsync = promisify(fs.readdir);
