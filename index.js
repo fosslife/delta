@@ -12,10 +12,14 @@ const { env, domainUrl } = require('./config');
 const isAuthorizedUser = require('./core/isAuthorizedUser');
 const { promisify } = require('util');
 const morgan = require('morgan');
+const db = require('./core/db');
+
+db.defaults({}).write();
+
 /**
  * Constants
  */
-const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/'; // Mind the training slash (/)
+const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/'; // Mind the trailing slash (/)
 
 const readFileAsync = promisify(fs.readFile);
 
