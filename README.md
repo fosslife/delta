@@ -2,6 +2,10 @@
 
 `sprk` is a small hobby project that I did in my free time. It's a file uploader + URL shortner. In short, you can fire a simple `curl` or any other equivalent command with a file name, and that file will be uploaded to your server, after that you'll have a short url as a reponse of upload. Like, if you upload your `user_environment_configuration_fedora.conf` to server, you'll have something like `small.url/y7Ac6_2.conf` in return. After than anyone with the URL with them, can access this file with a simple `GET` request, even from browser. 
 
+## Demo
+
+[![asciicast](https://asciinema.org/a/0e4sjjrPoEMq9uu8FIYSdNwsD.svg)](https://asciinema.org/a/0e4sjjrPoEMq9uu8FIYSdNwsD)
+
 ## Installation
 
 The module is a simple express server with some configuration. To set it up follow the steps:
