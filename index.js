@@ -16,11 +16,11 @@ const logger = require('./core/logger');
 
 db.defaults({}).write();
 
-logger.info('Server started');
 /**
  * Constants
  */
 const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/'; // Mind the trailing slash (/)
+logger.info(`Server started at ${DOMAIN}`);
 
 const readFileAsync = promisify(fs.readFile);
 
@@ -42,7 +42,7 @@ app.post('/', (req, res) => {
     if (responseStatus === 200) {
         upload(req, res, function (err) {
             if (err) {
-                console.error('Error while uploading the file', err);
+                logger.error('Error while uploading the file ' + err);
                 res.end('Something went wrong while uploading the file');
             }
             const url = `${DOMAIN}${req.file.url}\n`;
@@ -56,21 +56,22 @@ app.post('/', (req, res) => {
 app.get('/favicon.ico', (req, res) => res.sendFile(uploadsPath('../favicon.ico')));
 
 app.get('/:file', (req, res, next) => {
-    console.log(req.params);
+    // console.log(req.headers['user-agent']);
     const requestedFile = req.params.file;
+    logger.info('Serving file ' + requestedFile);
     readFileAsync(uploadsPath(requestedFile))
         .then(() => {
             res.sendFile(uploadsPath(requestedFile))
                 .then(() => {
-                    console.log('File sent');
+                    logger.info('File sent ' + requestedFile);
                 })
                 .catch(fileUploadError => {
-                    console.error('Error while sending the file', fileUploadError);
+                    logger.error('Error while sending the file ' + fileUploadError);
                     res.end('Error while sending file, please contact admin');
                 });
         })
         .catch(readErr => {
-            console.error('File reading Error', readErr);
+            logger.error('File reading Error ' + readErr);
             res.end('File not found');
         });
 });
