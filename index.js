@@ -11,7 +11,6 @@ const job = require('./core/cron');
 const { env, domainUrl } = require('./config');
 const isAuthorizedUser = require('./core/isAuthorizedUser');
 const { promisify } = require('util');
-const morgan = require('morgan');
 const db = require('./core/db');
 
 db.defaults({}).write();
@@ -28,9 +27,6 @@ express.response.sendFile = promisify(express.response.sendFile);
 const uploadsPath = (childPath = '') => {
     return path.resolve(__dirname, 'uploads', childPath);
 };
-
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'storage', 'access.log'), { flags: 'a' });
-app.use(morgan('combined', { stream: accessLogStream }));
 
 if (env === 'PROD') {
     job.start();
@@ -79,12 +75,3 @@ app.get('/:file', (req, res, next) => {
 
 // const server = 
 app.listen(3000, () => console.log(`Server started at ${DOMAIN}`));
-
-// let connections = [];
-
-// server.on('connection', connection => {
-//     connections.push(connection);
-//     connection.on('close', () => {
-//         connections = connections.filter(curr => curr !== connection);
-//     });
-// });
