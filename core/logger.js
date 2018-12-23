@@ -10,10 +10,8 @@ const logger = createLogger({
     transports: [
         new transports.File({ filename: './storage/error.log', level: 'error' }),
         new transports.File({ filename: './storage/combined.log',
-            format: format.combine(
-                format.printf(
-                    info => `${info.timestamp} ${info.level}: ${info.message}`
-                )
+            format: format.printf(
+                info => `${info.timestamp} ${info.level}: ${info.message}`
             )
         })
     ]
