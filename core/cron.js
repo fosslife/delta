@@ -8,6 +8,8 @@ const { differenceInDays } = require('date-fns');
 const path = require('path');
 const deleteAsync = promisify(fs.unlink);
 const logger = require('./logger');
+const { timeZone } = require('../config');
+const db = require('./db');
 
 const MIN_AGE = 1; // DAYS
 const MAX_AGE = 30; // DAYS
@@ -33,6 +35,7 @@ const getRetentionPeriod = stat => {
 };
 
 const job = new CronJob('5 4 * * sun', () => {
+    logger.info('Running Cron job for deleting files');
     readDirAsync(uploadsPath())
         .then(files => {
             files.map(file => {
@@ -42,7 +45,10 @@ const job = new CronJob('5 4 * * sun', () => {
                 if (diff > file.retention) {
                     deleteAsync(uploadsPath(file.file))
                         .then(() => {
-                            logger.info('Successsfully deleted the file', file.file);
+                            db.get('files')
+                                .remove({ 'shortened': file.file })
+                                .write();
+                            logger.info('Successsfully deleted the file ' + file.file);
                         }).catch(err => {
                             logger.error('Error while deleting' + err);
                         });
@@ -52,6 +58,6 @@ const job = new CronJob('5 4 * * sun', () => {
         .catch(err => {
             logger.error('Error in directory reading' + err);
         });
-}, null, false, 'Asia/Kolkata'); // Also exposes .start() chained method
+}, null, false, timeZone); // Also exposes .start() chained method
 
 module.exports = job;
