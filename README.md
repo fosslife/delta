@@ -6,19 +6,42 @@
 
 The module is a simple express server with some configuration. To set it up follow the steps:
 
-  - checkout project with `git clone https://github.com/Sparkenstein/sprk.git` or download zip from [master](https://github.com/Sparkenstein/sprk/archive/master.zip) branch.
-  - open `config.json` and made changes accordingly. it's a pretty self-descriptive JSON.
-    - You'll need to add an `apiKey`. it can be anything, but having a very long and random key helps.
-    - To generate such a string Use [this gist](https://gist.github.com/earthgecko/3089509) or just run `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1` in your terminal (Linux/Mac only).  
-  - install deps with `npm install` or `yarn install` or whichever tool you are using.
-  - Start the server with `npm start` or `yarn start` or even `node index.js` or `PM2` whichever you prefer. 
+  - Checkout project
+    - `git clone https://github.com/Sparkenstein/sprk.git` OR
+    - Download zip from [master](https://github.com/Sparkenstein/sprk/archive/master.zip) branch
+  - Open `config.json` and change these settings:
+    - `apiKey : 'RANDOM_LONG_STRING'`
+        - Run `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1` to generate such a ramdom secure string
+    - `domainUrl: 'https://your.domain.url/'` Keep the trailing slash `/`
+    - `env: 'PROD'` when deploying on a server, otherwise keep it as it is
+    - `timeZone: 'Your/Timezone'` This is used to run the cron job periodically according to your location
+  - Install dependencien with `npm install` or `yarn install`
+  - Start the server with `npm start` or `yarn start`
   - Enjoy!
 
 ## Usage
 If you have installed everything correctly, and server is working it's really easy to use it.
 
-### Method - 1
+> sprk binary method
+
+This is preferred way of uploading
+ - Download `sprk` binary from npm with `npm install -g sprk-bin` or `yarn global add sprk-bin`
+ - set env variables in your `.bashrc` or `.zshrc` or respective shell file
+   - `export SPRK_SERVER_URL="http://your.server.com/"`
+   - `export SPRK_API_KEY="ashdjahsj1231ad213"`
+ - And just restart the terminals. now you'll be able to use your private instance just like `cUrl` command
+   - `$ sprk youfile.jpg`
+   - This will automatically pick all the information needed from env variables and send the file to the server.
+
+
+> Curl Method
+
 Most basic method, and it will work with just simple `curl` command.
 - Go to the directory from which you want to upload the file
 - run `curl -H {api-key: {API_KEY}} -F file=@{filename.ext} URL`, 
 - Remember to replace `{filename.ext}` with actual filename you want to upload like `cuteCat.jpg`, `{API_KEY}` with the API key you generated/used for server and `{URL}` with the URL where your server is running  (all without curly brackets). 
+
+
+## Licence
+
+sprk is Licensed under [MIT](https://github.com/Sparkenstein/sprk/blob/master/LICENSE)
