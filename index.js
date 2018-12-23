@@ -12,9 +12,11 @@ const { env, domainUrl } = require('./config');
 const isAuthorizedUser = require('./core/isAuthorizedUser');
 const { promisify } = require('util');
 const db = require('./core/db');
+const logger = require('./core/logger');
 
 db.defaults({}).write();
 
+logger.info('Server started');
 /**
  * Constants
  */
@@ -73,5 +75,4 @@ app.get('/:file', (req, res, next) => {
         });
 });
 
-// const server = 
 app.listen(3000, () => console.log(`Server started at ${DOMAIN}`));
