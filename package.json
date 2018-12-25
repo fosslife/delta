@@ -20,6 +20,7 @@
     "express-ip": "^1.0.3",
     "lowdb": "^1.0.0",
     "multer": "^1.4.1",
+    "valid-url": "^1.0.9",
     "winston": "^3.1.0"
   },
   "devDependencies": {
