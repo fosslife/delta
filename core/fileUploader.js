@@ -16,10 +16,9 @@ const fileUploader = (req, res) => {
                 const originalName = req.file.originalname;
                 const shortened = req.file.filename;
                 logger.info('Uploading ' + JSON.stringify(originalName) + ' as ' + shortened);
-                const id = db.get('files').size() + 1;
                 db
-                    .get('files')
-                    .push({ id, 'originalName': originalName, 'shortened': shortened })
+                    .get('collection')
+                    .push({ 'originalName': originalName, 'shortened': req.file.url })
                     .write();
                 const url = `${DOMAIN}${req.file.url}\n`;
                 res.end(url);

@@ -11,8 +11,8 @@ const storage = multer.diskStorage({
         const uid = db.get('uniqueID').value();
         const id = encode(uid);
         db.set('uniqueID', uid + 1).write();
-        file.url = id + path.extname(file.originalname);
-        cb(null, id + path.extname(file.originalname));
+        file.url = id; // + path.extname(file.originalname);
+        cb(null, id + path.extname(file.originalname)); //
     }
 });
 
