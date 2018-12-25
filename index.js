@@ -13,9 +13,12 @@ const db = require('./core/db');
 const logger = require('./core/logger');
 const expressip = require('express-ip');
 const fileUploader = require('./core/fileUploader');
+const bodyParser = require('body-parser');
 
 db.defaults({ files: [] }).write();
 app.use(expressip().getIpInfoMiddleware);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 /**
  * Constants
  */
