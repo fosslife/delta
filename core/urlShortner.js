@@ -10,16 +10,15 @@ const urlShortener = (req, res) => {
     const isURL = validURL.isWebUri(URL);
     if (isURL) {
         const uid = db.get('uniqueID').value();
-        const id = db.get('urls').size() + 1;
         if (specialURL) {
             const fullURL = `${DOMAIN}${specialURL}`;
-            db.get('urls').push({ id, originalURL: URL, shortenedURL: fullURL }).write();
+            db.get('collection').push({ originalURL: URL, shortenedURL: specialURL }).write();
             res.write(fullURL);
             res.end('\n');
         } else {
             const shortenedURL = encode(uid);
             const fullURL = `${DOMAIN}${shortenedURL}`;
-            db.get('urls').push({ id, originalURL: URL, shortenedURL: fullURL }).write();
+            db.get('collection').push({ originalURL: URL, shortenedURL: shortenedURL }).write();
             res.write(fullURL);
             res.end('\n');
         }

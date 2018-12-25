@@ -22,7 +22,7 @@ const urlShortner = require('./core/urlShortner');
 const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/'; // Mind the trailing slash (/)
 logger.info(`Server started at ${DOMAIN}`);
 
-db.defaults({ files: [], urls: [], uniqueID: 1000 }).write();
+db.defaults({ collection: [], uniqueID: 10000 }).write();
 app.use(expressip().getIpInfoMiddleware);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -59,6 +59,7 @@ app.get('/:file', (req, res, next) => {
     // console.log(req.headers['user-agent']);
     const requestedFile = req.params.file;
     logger.info('Serving file ' + requestedFile);
+    // const record = db.get()
     readFileAsync(uploadsPath(requestedFile))
         .then(() => {
             res.sendFile(uploadsPath(requestedFile))
