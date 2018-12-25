@@ -12,13 +12,13 @@ const urlShortener = (req, res) => {
         const uid = db.get('uniqueID').value();
         if (specialURL) {
             const fullURL = `${DOMAIN}${specialURL}`;
-            db.get('collection').push({ originalURL: URL, shortenedURL: specialURL }).write();
+            db.get('collection').push({ originalURL: URL, short: specialURL, type: 'url' }).write();
             res.write(fullURL);
             res.end('\n');
         } else {
             const shortenedURL = encode(uid);
             const fullURL = `${DOMAIN}${shortenedURL}`;
-            db.get('collection').push({ originalURL: URL, shortenedURL: shortenedURL }).write();
+            db.get('collection').push({ originalURL: URL, short: shortenedURL, type: 'url' }).write();
             res.write(fullURL);
             res.end('\n');
         }

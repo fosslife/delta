@@ -59,22 +59,28 @@ app.get('/:file', (req, res, next) => {
     // console.log(req.headers['user-agent']);
     const requestedFile = req.params.file;
     logger.info('Serving file ' + requestedFile);
-    // const record = db.get()
-    readFileAsync(uploadsPath(requestedFile))
-        .then(() => {
-            res.sendFile(uploadsPath(requestedFile))
-                .then(() => {
-                    logger.info('File sent ' + requestedFile);
-                })
-                .catch(fileUploadError => {
-                    logger.error('Error while sending the file ' + fileUploadError);
-                    res.end('Error while sending file, please contact admin');
-                });
-        })
-        .catch(readErr => {
-            logger.error('File reading Error ' + readErr);
-            res.end('File not found');
-        });
+    const record = db.get('collection').find({ short: requestedFile }).value();
+    if (record && record.type === 'file') {
+        readFileAsync(uploadsPath(record.filename))
+            .then(() => {
+                res.sendFile(uploadsPath(record.filename))
+                    .then(() => {
+                        logger.info('File sent ' + record.filename);
+                    })
+                    .catch(fileUploadError => {
+                        logger.error('Error while sending the file ' + fileUploadError);
+                        res.end('Error while sending file, please contact admin');
+                    });
+            })
+            .catch(readErr => {
+                logger.error('File reading Error ' + readErr);
+                res.end('File not found');
+            });
+    } else if (record && record.type === 'url') {
+        res.redirect(record.originalURL);
+    } else {
+        res.end('Cannot find the specified record');
+    }
 });
 
 app.listen(3000, () => console.log(`Server started at ${DOMAIN}`));
