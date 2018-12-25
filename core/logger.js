@@ -1,19 +1,21 @@
 const { createLogger, format, transports } = require('winston');
+const { combine, timestamp, label, printf, splat, simple } = format;
+
+const customFormat = printf(info => `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`);
 
 const logger = createLogger({
-    format: format.combine(
-        format.timestamp({
-            format: 'YYYY-MM-DD HH:mm:ss'
+    format: combine(
+        splat(),
+        simple(),
+        label({ label: 'sprk server' }),
+        timestamp({
+            format: 'MM-DD-YYYY hh:mm:ss A',
         }),
-        format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
+        customFormat,
     ),
     transports: [
-        new transports.File({ filename: './storage/error.log', level: 'error' }),
-        new transports.File({ filename: './storage/combined.log',
-            format: format.printf(
-                info => `${info.timestamp} ${info.level}: ${info.message}`
-            )
-        })
+        new transports.File({ dirname: 'storage', filename: 'error.log', level: 'error' }),
+        new transports.File({ dirname: 'storage', filename: 'combined.log' })
     ]
 });
 
