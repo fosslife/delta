@@ -14,11 +14,12 @@ const fileUploader = (req, res) => {
         upload(req, res)
             .then(() => {
                 const originalName = req.file.originalname;
-                const shortened = req.file.filename;
+                const shortened = req.file.url;
+                const filename = req.file.filename;
                 logger.info('Uploading ' + JSON.stringify(originalName) + ' as ' + shortened);
                 db
                     .get('collection')
-                    .push({ 'originalName': originalName, 'shortened': req.file.url })
+                    .push({ 'originalName': originalName, 'short': shortened, 'type': 'file', 'filename': filename })
                     .write();
                 const url = `${DOMAIN}${req.file.url}\n`;
                 res.end(url);
