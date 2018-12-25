@@ -45,8 +45,8 @@ const job = new CronJob('5 4 * * sun', () => {
                 if (diff > file.retention) {
                     deleteAsync(uploadsPath(file.file))
                         .then(() => {
-                            db.get('collection')
-                                .remove({ 'shortened': file.file })
+                            db.get('deleted')
+                                .push(file.file)
                                 .write();
                             logger.info('Successsfully deleted the file ' + file.file);
                         }).catch(err => {
