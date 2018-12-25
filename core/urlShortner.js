@@ -6,15 +6,24 @@ const validURL = require('valid-url');
 
 const urlShortener = (req, res) => {
     const URL = req.body.url;
+    const specialURL = req.body.custom;
     const isURL = validURL.isWebUri(URL);
     if (isURL) {
         const uid = db.get('uniqueID').value();
-        const shortURL = encode(uid);
         const id = db.get('urls').size() + 1;
-        db.get('urls').push({ id, originalURL: URL, shortenedURL: shortURL }).write();
+        if (specialURL) {
+            const fullURL = `${DOMAIN}${specialURL}`;
+            db.get('urls').push({ id, originalURL: URL, shortenedURL: fullURL }).write();
+            res.write(fullURL);
+            res.end('\n');
+        } else {
+            const shortenedURL = encode(uid);
+            const fullURL = `${DOMAIN}${shortenedURL}`;
+            db.get('urls').push({ id, originalURL: URL, shortenedURL: fullURL }).write();
+            res.write(fullURL);
+            res.end('\n');
+        }
         db.set('uniqueID', uid + 1).write();
-        res.write(`${DOMAIN}${shortURL}`);
-        res.end('\n');
     } else {
         res.end('Please enter a valid http/https URL\n');
     }
