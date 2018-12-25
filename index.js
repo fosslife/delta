@@ -22,7 +22,7 @@ const urlShortner = require('./core/urlShortner');
 const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/'; // Mind the trailing slash (/)
 logger.info(`Server started at ${DOMAIN}`);
 
-db.defaults({ collection: [], uniqueID: 10000 }).write();
+db.defaults({ collection: [], deleted: [], uniqueID: 10000 }).write();
 app.use(expressip().getIpInfoMiddleware);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
