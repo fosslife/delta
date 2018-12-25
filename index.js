@@ -14,16 +14,18 @@ const logger = require('./core/logger');
 const expressip = require('express-ip');
 const fileUploader = require('./core/fileUploader');
 const bodyParser = require('body-parser');
+const urlShortner = require('./core/urlShortner');
+
+/**
+ * Middlewares and inits
+ */
+const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/'; // Mind the trailing slash (/)
+logger.info(`Server started at ${DOMAIN}`);
 
 db.defaults({ files: [] }).write();
 app.use(expressip().getIpInfoMiddleware);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-/**
- * Constants
- */
-const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/'; // Mind the trailing slash (/)
-logger.info(`Server started at ${DOMAIN}`);
 
 const readFileAsync = promisify(fs.readFile);
 
@@ -43,9 +45,11 @@ if (env === 'PROD') {
 app.post('/', (req, res) => {
     const requestBody = req.body;
     if (!requestBody.url) {
+        logger.info('Uploading file');
         fileUploader(req, res);
     } else {
-        res.end('shortened url: abcd \n');
+        logger.info('Shortening URL');
+        urlShortner(req, res);
     }
 });
 
