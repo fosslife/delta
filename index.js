@@ -5,7 +5,6 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const fs = require('fs');
 const job = require('./core/cron');
 const { env, domainUrl } = require('./config');
 const { promisify } = require('util');
@@ -15,6 +14,7 @@ const expressip = require('express-ip');
 const fileUploader = require('./core/fileUploader');
 const bodyParser = require('body-parser');
 const urlShortner = require('./core/urlShortner');
+const getFile = require('./core/getFile');
 
 /**
  * Middlewares and inits
@@ -26,8 +26,6 @@ db.defaults({ collection: [], deleted: [], uniqueID: 10000 }).write();
 app.use(expressip().getIpInfoMiddleware);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-const readFileAsync = promisify(fs.readFile);
 
 express.response.sendFile = promisify(express.response.sendFile);
 
@@ -61,21 +59,8 @@ app.get('/:file', (req, res, next) => {
     logger.info('Serving file ' + requestedFile);
     const record = db.get('collection').find({ short: requestedFile }).value();
     if (record && record.type === 'file') {
-        readFileAsync(uploadsPath(record.filename))
-            .then(() => {
-                res.sendFile(uploadsPath(record.filename))
-                    .then(() => {
-                        logger.info('File sent ' + record.filename);
-                    })
-                    .catch(fileUploadError => {
-                        logger.error('Error while sending the file ' + fileUploadError);
-                        res.end('Error while sending file, please contact admin');
-                    });
-            })
-            .catch(readErr => {
-                logger.error('File reading Error ' + readErr);
-                res.end('File not found');
-            });
+        const fileName = record.filename;
+        getFile(fileName, req, res);
     } else if (record && record.type === 'url') {
         res.redirect(record.originalURL);
     } else {
