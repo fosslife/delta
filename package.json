@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js --ignore 'storage/*'"
+    "start": "nodemon index.js --ignore 'storage'"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
