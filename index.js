@@ -11,10 +11,10 @@ const { promisify } = require('util');
 const db = require('./core/db');
 const logger = require('./core/logger');
 const expressip = require('express-ip');
-const fileUploader = require('./core/fileUploader');
+const fileUploader = require('./core/files/fileUploader');
 const bodyParser = require('body-parser');
-const urlShortner = require('./core/urlShortner');
-const getFile = require('./core/getFile');
+const urlShortner = require('./core/urls/urlShortner');
+const getFile = require('./core/files/getFile');
 
 /**
  * Middlewares and inits

@@ -2,11 +2,11 @@
 
 const multer = require('multer');
 const path = require('path');
-const { encode } = require('./shortURL');
-const db = require('./db');
+const { encode } = require('../urls/shortURL');
+const db = require('../db');
 
 const storage = multer.diskStorage({
-    destination: path.resolve(__dirname, '../uploads'),
+    destination: path.resolve(__dirname, '..', '..', 'uploads'),
     filename: (req, file, cb) => {
         const uid = db.get('uniqueID').value();
         const id = encode(uid);

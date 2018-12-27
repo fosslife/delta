@@ -1,5 +1,5 @@
 const { resolve } = require('path');
-const logger = require('./logger');
+const logger = require('../logger');
 
 const uploadsPath = (childPath = '') => {
     return resolve(__dirname, '..', 'uploads', childPath);

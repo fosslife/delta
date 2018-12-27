@@ -1,6 +1,6 @@
 const { encode } = require('./shortURL');
-const db = require('./db');
-const { env, domainUrl } = require('../config');
+const db = require('../db');
+const { env, domainUrl } = require('../../config');
 const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/';
 const validURL = require('valid-url');
 

@@ -1,9 +1,9 @@
 const { promisify } = require('util');
 const upload = promisify(require('./diskstorage').upload);
-const isAuthorizedUser = require('./isAuthorizedUser');
-const logger = require('./logger');
-const db = require('./db');
-const { env, domainUrl } = require('../config');
+const isAuthorizedUser = require('../isAuthorizedUser');
+const logger = require('../logger');
+const db = require('../db');
+const { env, domainUrl } = require('../../config');
 
 const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/';
 
