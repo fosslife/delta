@@ -1,6 +1,7 @@
-const { encode } = require('./shortURL');
-const db = require('../db');
-const { env, domainUrl } = require('../../config');
+const reqLib = require('app-root-path').require;
+const { encode } = reqLib('core/urls/shortURL');
+const db = reqLib('core/db');
+const { env, domainUrl } = reqLib('config');
 const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/';
 const validURL = require('valid-url');
 

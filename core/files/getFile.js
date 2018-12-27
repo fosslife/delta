@@ -1,5 +1,6 @@
 const { resolve } = require('path');
-const logger = require('../logger');
+const reqLib = require('app-root-path').require;
+const logger = reqLib('core/logger');
 
 const uploadsPath = (childPath = '') => {
     return resolve(__dirname, '..', 'uploads', childPath);

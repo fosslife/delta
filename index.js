@@ -5,16 +5,17 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const job = require('./core/cron');
-const { env, domainUrl } = require('./config');
+const reqLib = require('app-root-path').require;
+const job = reqLib('core/cron');
+const { env, domainUrl } = reqLib('config');
 const { promisify } = require('util');
-const db = require('./core/db');
-const logger = require('./core/logger');
+const db = reqLib('core/db');
+const logger = reqLib('core/logger');
 const expressip = require('express-ip');
-const fileUploader = require('./core/files/fileUploader');
+const fileUploader = reqLib('core/files/fileUploader');
 const bodyParser = require('body-parser');
-const urlShortner = require('./core/urls/urlShortner');
-const getFile = require('./core/files/getFile');
+const urlShortner = reqLib('core/urls/urlShortner');
+const getFile = reqLib('core/files/getFile');
 
 /**
  * Middlewares and inits

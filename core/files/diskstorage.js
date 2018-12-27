@@ -2,9 +2,9 @@
 
 const multer = require('multer');
 const path = require('path');
-const { encode } = require('../urls/shortURL');
-const db = require('../db');
-
+const reqLib = require('app-root-path').require;
+const { encode } = reqLib('core/urls/shortURL');
+const db = reqLib('core/db');
 const storage = multer.diskStorage({
     destination: path.resolve(__dirname, '..', '..', 'uploads'),
     filename: (req, file, cb) => {

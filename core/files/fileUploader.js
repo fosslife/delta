@@ -1,9 +1,10 @@
 const { promisify } = require('util');
-const upload = promisify(require('./diskstorage').upload);
-const isAuthorizedUser = require('../isAuthorizedUser');
-const logger = require('../logger');
-const db = require('../db');
-const { env, domainUrl } = require('../../config');
+const reqLib = require('app-root-path').require;
+const upload = promisify(reqLib('core/files/diskstorage').upload);
+const isAuthorizedUser = reqLib('core/isAuthorizedUser');
+const logger = reqLib('core/logger');
+const db = reqLib('core/db');
+const { env, domainUrl } = reqLib('config');
 
 const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/';
 
