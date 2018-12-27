@@ -3,7 +3,7 @@ const reqLib = require('app-root-path').require;
 const logger = reqLib('core/logger');
 
 const uploadsPath = (childPath = '') => {
-    return resolve(__dirname, '..', 'uploads', childPath);
+    return resolve(__dirname, '..', '..', 'uploads', childPath);
 };
 
 const getFile = (filename, req, res) => {
