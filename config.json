@@ -4,5 +4,9 @@
     },
     "env" : "DEVELOPMENT",
     "domainUrl" : "sprk.pw",
-    "timeZone" : "Asia/Kolkata"
+    "timeZone" : "Asia/Kolkata",
+    "users" : [
+        { "spark": "atest" },
+        { "pwnj" : "btest" }
+    ]
 }
