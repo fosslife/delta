@@ -27,7 +27,7 @@ const fileUploader = (req, res) => {
             })
             .catch(err => {
                 logger.error('Error while uploading the file ' + err);
-                res.end('Something went wrong while uploading the file \n');
+                res.end('Something went wrong while uploading the file \n' + err);
             });
     } else {
         logger.error('Unauthorized user visit ' + JSON.stringify(req.ipInfo));

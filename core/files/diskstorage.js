@@ -12,12 +12,10 @@ const storage = multer.diskStorage({
     // path.resolve(__dirname, '..', '..', 'uploads')
     destination: (req, file, cb) => {
         const [ username ] = auth(req.get('api-key'));
-        console.log(username);
+        // TODO: Change this uglyness
         const uniquePath = path.resolve(__dirname, '..', '..', 'uploads', username);
         const rootPath = path.resolve(__dirname, '..', '..', 'uploads');
-        /**
-         * Convert this to Async operations:
-         */
+        // TODO: Convert this to Async operations
         if (!existsSync(rootPath)) {
             mkdirSync(rootPath);
         }

@@ -6,7 +6,7 @@
     "domainUrl" : "sprk.pw",
     "timeZone" : "Asia/Kolkata",
     "users" : [
-        { "spark": "atest" },
-        { "pwnj" : "btest" }
+        [ "spark", "a" ],
+        [ "pwnj", "b" ]
     ]
 }
