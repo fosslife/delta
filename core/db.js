@@ -8,7 +8,10 @@ if (!storageExists) {
     mkdirSync(resolve(__dirname, '..', 'storage'));
 }
 
-const adapter = new FileSync(resolve(__dirname, '..', 'storage', 'db.json'));
+const adapter = new FileSync(resolve(__dirname, '..', 'storage', 'db.json'), {
+    serialize: obj => JSON.stringify(obj),
+    deserialize: data => JSON.parse(data)
+});
 const db = lowdb(adapter);
 
 module.exports = db;
