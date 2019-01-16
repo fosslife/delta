@@ -9,7 +9,7 @@ const path = require('path');
 const deleteAsync = promisify(fs.unlink);
 const reqLib = require('app-root-path').require;
 const logger = reqLib('core/logger');
-const { timeZone } = reqLib('config');
+const { timeZone, cron } = reqLib('config');
 const db = reqLib('core/db');
 
 const MIN_AGE = 1; // DAYS
@@ -35,7 +35,7 @@ const getRetentionPeriod = stat => {
     return MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
 };
 
-const job = new CronJob('5 4 * * sun', () => {
+const job = new CronJob(cron, () => {
     logger.info('Running Cron job for deleting files');
     readDirAsync(uploadsPath())
         .then(files => {

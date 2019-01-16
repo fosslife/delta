@@ -4,5 +4,6 @@
     },
     "env" : "DEVELOPMENT",
     "domainUrl" : "sprk.pw",
-    "timeZone" : "Asia/Kolkata"
+    "timeZone" : "Asia/Kolkata",
+    "cron": "5 4 * * sun"
 }
