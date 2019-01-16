@@ -11,7 +11,8 @@ const auth = reqLib('core/auth');
 const storage = multer.diskStorage({
     // path.resolve(__dirname, '..', '..', 'uploads')
     destination: (req, file, cb) => {
-        const [ username ] = auth(req.get('api-key'));
+        const [ username, , domain ] = auth(req.get('api-key'));
+        file.domain = domain;
         // TODO: Change this uglyness
         const uniquePath = path.resolve(__dirname, '..', '..', 'uploads', username);
         const rootPath = path.resolve(__dirname, '..', '..', 'uploads');
@@ -28,7 +29,7 @@ const storage = multer.diskStorage({
         const uid = db.get('uniqueID').value();
         const id = encode(uid);
         db.set('uniqueID', uid + 1).write();
-        file.url = id; // + path.extname(file.originalname);
+        file.url = `${file.domain}${id}`; // + path.extname(file.originalname);
         cb(null, id + path.extname(file.originalname)); //
     }
 });

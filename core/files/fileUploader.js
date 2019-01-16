@@ -4,9 +4,6 @@ const upload = promisify(reqLib('core/files/diskstorage').upload);
 const isAuthorizedUser = reqLib('core/isAuthorizedUser');
 const logger = reqLib('core/logger');
 const db = reqLib('core/db');
-const { env, domainUrl } = reqLib('config');
-
-const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/';
 
 const fileUploader = (req, res) => {
     const API_KEY_HEADER = req.get('api-key');
@@ -22,7 +19,7 @@ const fileUploader = (req, res) => {
                     .get('collection')
                     .push({ 'originalName': originalName, 'short': shortened, 'type': 'file', 'filename': filename })
                     .write();
-                const url = `${DOMAIN}${req.file.url}\n`;
+                const url = `${req.file.url}\n`;
                 res.end(url);
             })
             .catch(err => {
