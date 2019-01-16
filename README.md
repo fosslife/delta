@@ -68,6 +68,31 @@ Considering apiKey = 1234:
  - To shorten custom URL, again this repository, to `sprk`
    ⇒ `curl -H 'api-key: 1234' -d 'url=https://github.com/Sparkenstein/sprk.git' -d 'custom=sprk' http://url.com/`
 
+## Multiuser
+
+sprk is a private file uploader, and it's supposed to be used for personal use only. Unlike many other famous file uploaders it's not open to all. for that purpose, you can just keep your API key simple like `a` or something and distribute it publicly somewhere so that everyone can use your servers instance. 
+But what if you don't want to distribute your api key but still let other people use the server? what if each users data is supposed to be stored in different directory? what if other users don't want your hostname in return but something different?
+:grin: sprk supports all of it. `multiuser` branch lets you host sprk for multiple users on the same instance. just edit the given `config.json` and you are good to go. The structure of `config.json` is a littlebit different than that of master branch
+
+ - Everything is inside a `users` array
+ - First element represents the name of the user.
+   - this will be used to create different directories to store the uploaded files for each user.
+   - keep this parameter same for those users you want to store files in the same directory
+ - Second parameter is apiKey, this can be different for each user
+ - third paramter is the server name which will be returned as a short URL as a response.
+
+Example:
+this is current configuration:
+```json
+users: [
+  ['spark', '1234', 'https://i.sprk.pw/'],
+  ['Pavan', 'abcd', 'https://pwnj.pw/']
+]
+```
+And, If spark makes a request to the server with his own api key, the server will store the uploaded file inside a different dir called `spark` in `uploads/` folder, and will return `https://i.sprk.pw/7HgY` as shortened URL, but if Pavan makes a request to same server with his private api key, his files will be stored in `Pavan` directory under `uploads/` folder, and he will get `https://pwnj.pw/8Hy` in return :)
+
+
+
 ## Licence
 
 sprk is Licensed under [MIT](https://github.com/Sparkenstein/sprk/blob/master/LICENSE)
