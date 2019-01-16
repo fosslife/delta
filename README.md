@@ -40,13 +40,33 @@ The module is a simple express server with some configuration. To set it up foll
 If you have installed everything correctly, and server is working it's really easy to use it.
 
 
-##### curl Method
+#### curl Method
 
-Most basic method, and it will work with just simple `curl` command.
-- Go to the directory from which you want to upload the file
-- run `curl -H {api-key: {API_KEY}} -F file=@{filename.ext} URL`, 
-- Remember to replace `{filename.ext}` with actual filename you want to upload like `cuteCat.jpg`, `{API_KEY}` with the API key you generated/used for server and `{URL}` with the URL where your server is running  (all without curly brackets). 
+Most basic method, and it will work with just simple `curl` command or alternative.
 
+##### for files
+  - Go to the directory from which you want to upload the file
+  - run `curl -H 'api-key: API_KEY' -F file=@filename https://url.com/`, 
+  - Replace required data accordingly
+    - API_KEY ⭢ The exact key you have given on server in `config.json`
+    - filename ⭢ filename you want to upload
+
+##### for urls
+  - Just replace `-F file=@filename` part with `-d 'url=http://google.com/`. Rest of the command stays same
+  - To generate custom URLs add `-d 'custom=test'` with previous command
+
+See [Examples](#examples) for more details.
+
+
+## Examples
+
+Considering apiKey = 1234: 
+ - To upload a file called dogs.jpg
+   ⇒ `curl -H 'api-key: 1234' -F file=@dogs.jpg http://url.com/`
+ - To shorten a URL, say this repository
+   ⇒ `curl -H 'api-key: 1234' -d 'url=https://github.com/Sparkenstein/sprk.git' http://url.com/`
+ - To shorten custom URL, again this repository, to `sprk`
+   ⇒ `curl -H 'api-key: 1234' -d 'url=https://github.com/Sparkenstein/sprk.git' -d 'custom=sprk' http://url.com/`
 
 ## Licence
 
