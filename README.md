@@ -10,19 +10,22 @@
 
 The module is a simple express server with some configuration. To set it up follow the steps:
 
-  - Checkout project
-    - `git clone https://github.com/Sparkenstein/sprk.git` OR
-    - Download zip from [master](https://github.com/Sparkenstein/sprk/archive/master.zip) branch
-  - Open `config.json` and change these settings:
-    - `apiKey : 'RANDOM_LONG_STRING'`
-        - Run `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1` to generate such a ramdom secure string
-    - `domainUrl: 'https://your.domain.url/'` Keep the trailing slash `/`
-    - `env: 'PROD'` when deploying on a server, otherwise keep it as it is
-    - `timeZone: 'Your/Timezone'` This is used to run the cron job periodically according to your location
-  - Install dependencien with `npm install` or `yarn install`
-  - Start the server with `npm start` or `yarn start`
-  - Enjoy!
-
+##### Checkout project
+  - `git clone https://github.com/Sparkenstein/sprk.git` OR
+  - Download zip from [master](https://github.com/Sparkenstein/sprk/archive/master.zip) branch
+##### Configuration
+  - `apiKey : 'RANDOM_LONG_STRING'`
+    To generate a random string, you can run 
+    `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
+    or 
+    `date | md5sum | base64 | head -c 32`
+  - `domainUrl: 'https://your.domain.url/'` Keep the trailing slash `/`
+  - `env: 'PROD'` when deploying on a server, otherwise keep it as it is
+  - `timeZone: 'Your/Timezone'` This is used to run the cron job periodically according to your location
+##### Install dependencies
+  - Run `npm install` or `yarn install` or your favourite other tool :P
+##### Enjoy
+  - Server is started, enjoy!
 ## Usage
 If you have installed everything correctly, and server is working it's really easy to use it.
 
