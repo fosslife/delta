@@ -39,19 +39,8 @@ The module is a simple express server with some configuration. To set it up foll
 ## Usage
 If you have installed everything correctly, and server is working it's really easy to use it.
 
-> sprk binary method
 
-This is preferred way of uploading
- - Download `sprk` binary from npm with `npm install -g sprk-bin` or `yarn global add sprk-bin`
- - set env variables in your `.bashrc` or `.zshrc` or respective shell file
-   - `export SPRK_SERVER_URL="http://your.server.com/"`
-   - `export SPRK_API_KEY="YWQ4YzAwYTlhZTIzOGQwOWVjNzFmZjI1"`
- - And just restart the terminals. now you'll be able to use your private instance just like `cUrl` command
-   - `$ sprk youfile.jpg`
-   - This will automatically pick all the information needed from env variables and send the file to the server.
-
-
-> Curl Method
+##### curl Method
 
 Most basic method, and it will work with just simple `curl` command.
 - Go to the directory from which you want to upload the file
