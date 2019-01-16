@@ -83,7 +83,7 @@ But what if you don't want to distribute your api key but still let other people
 
 Example:
 this is current configuration:
-```json
+```js
 {
   users: [
     ['spark', '1234', 'https://i.sprk.pw/'],
