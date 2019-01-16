@@ -84,10 +84,12 @@ But what if you don't want to distribute your api key but still let other people
 Example:
 this is current configuration:
 ```json
-users: [
-  ['spark', '1234', 'https://i.sprk.pw/'],
-  ['Pavan', 'abcd', 'https://pwnj.pw/']
-]
+{
+  users: [
+    ['spark', '1234', 'https://i.sprk.pw/'],
+    ['Pavan', 'abcd', 'https://pwnj.pw/']
+  ]
+}
 ```
 And, If spark makes a request to the server with his own api key, the server will store the uploaded file inside a different dir called `spark` in `uploads/` folder, and will return `https://i.sprk.pw/7HgY` as shortened URL, but if Pavan makes a request to same server with his private api key, his files will be stored in `Pavan` directory under `uploads/` folder, and he will get `https://pwnj.pw/8Hy` in return :)
 
