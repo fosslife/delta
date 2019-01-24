@@ -20,16 +20,17 @@ const urlShortener = (req, res) => {
                 const fullURL = `${DOMAIN}${specialURL}`;
                 db.get('collection').push({ originalURL: URL, short: specialURL, type: 'url' }).write();
                 res.write(fullURL);
-                res.end('\n');
+                res.end('\n');  // Workaround for zsh adding '%' at the end
             } else {
                 const shortenedURL = encode(uid);
                 const fullURL = `${DOMAIN}${shortenedURL}`;
                 db.get('collection').push({ originalURL: URL, short: shortenedURL, type: 'url' }).write();
                 res.write(fullURL);
-                res.end('\n');
+                res.end('\n');    // Workaround for zsh adding '%' at the end
             }
             db.set('uniqueID', uid + 1).write();
         } else {
+            logger.error('User gave invalid URL');
             res.end('Please enter a valid http/https URL\n');
         }
     } else {
