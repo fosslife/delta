@@ -22,8 +22,9 @@ uploads.get('/:file', (req, res, next) => {
     const requestedFile = req.params.file;
     logger.info('Serving file ' + requestedFile);
     const record = db.get('collection').find({ short: requestedFile }).value();
+    logger.info('Found record' + JSON.stringify(record));
     if (record && record.type === 'file') {
-        const fileName = record.filename;
+        const fileName = record.filepath;
         getFile(fileName, req, res);
     } else if (record && record.type === 'url') {
         res.redirect(record.originalURL);
