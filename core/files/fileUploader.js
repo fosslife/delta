@@ -13,13 +13,13 @@ const fileUploader = (req, res) => {
             .then(() => {
                 const originalName = req.file.originalname;
                 const shortened = req.file.url;
-                const filename = req.file.filename;
+                const filepath = req.file.path;
                 logger.info('Uploading ' + JSON.stringify(originalName) + ' as ' + shortened);
                 db
                     .get('collection')
-                    .push({ 'originalName': originalName, 'short': shortened, 'type': 'file', 'filename': filename })
+                    .push({ 'originalName': originalName, 'short': shortened, 'type': 'file', 'filepath': filepath })
                     .write();
-                const url = `${req.file.url}\n`;
+                const url = `${req.file.domain}${req.file.url}\n`;
                 res.end(url);
             })
             .catch(err => {

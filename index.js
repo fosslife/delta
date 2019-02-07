@@ -21,7 +21,7 @@ const uploads = reqLib('routes/uploads');
  * Middlewares and inits
  */
 
-db.defaults({ collection: [], deleted: [], uniqueID: 10000 }).write();
+db.defaults({ collection: [], deleted: [], uniqueID: 1000 }).write();
 app.use(expressip().getIpInfoMiddleware);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
