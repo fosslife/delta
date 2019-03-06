@@ -5,26 +5,21 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const reqLib = require('app-root-path').require;
-const job = reqLib('core/cron');
-const { env } = reqLib('config');
+const job = require('./core/cron');
+const { env } = require('./config');
 const { promisify } = require('util');
-const db = reqLib('core/db');
-const logger = reqLib('core/logger');
-const expressip = require('express-ip');
+const db = require('./core/db');
+const logger = require('./core/logger');
 
-const bodyParser = require('body-parser');
-
-const uploads = reqLib('routes/uploads');
+const uploads = require('./routes/uploads');
 
 /**
  * Middlewares and inits
  */
 
 db.defaults({ collection: [], deleted: [], uniqueID: 1000 }).write();
-app.use(expressip().getIpInfoMiddleware);
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 express.response.sendFile = promisify(express.response.sendFile);
 
@@ -44,4 +39,6 @@ app.get('/favicon.ico', (req, res) => res.sendFile(uploadsPath('../favicon.ico')
 
 app.use('/', uploads);
 
-app.listen(3000, () => console.log(`Server started at port 3000`));
+app.listen(3000, () =>
+    // eslint-disable-next-line
+    console.log('Server started at port 3000'));

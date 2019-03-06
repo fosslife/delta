@@ -1,6 +1,7 @@
+'use strict';
+
 const { resolve } = require('path');
-const reqLib = require('app-root-path').require;
-const logger = reqLib('core/logger');
+const logger = require('../logger');
 
 const uploadsPath = (childPath = '') => {
     return resolve(__dirname, '..', '..', 'uploads', childPath);

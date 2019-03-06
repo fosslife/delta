@@ -7,10 +7,9 @@ const { CronJob } = require('cron');
 const { differenceInDays } = require('date-fns');
 const path = require('path');
 const deleteAsync = promisify(fs.unlink);
-const reqLib = require('app-root-path').require;
-const logger = reqLib('core/logger');
-const { timeZone, cron } = reqLib('config');
-const db = reqLib('core/db');
+const logger = require('./logger');
+const { timeZone, cron } = require('../config');
+const db = require('./db');
 
 const MIN_AGE = 1; // DAYS
 const MAX_AGE = 30; // DAYS

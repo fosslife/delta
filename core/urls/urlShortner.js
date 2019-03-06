@@ -1,10 +1,11 @@
-const reqLib = require('app-root-path').require;
-const { encode } = reqLib('core/urls/shortURL');
-const db = reqLib('core/db');
+'use strict';
+
+const { encode } = require('../urls/shortURL');
+const db = require('../db');
 const validURL = require('valid-url');
-const isAuthorizedUser = reqLib('core/isAuthorizedUser');
-const logger = reqLib('core/logger');
-const auth = reqLib('core/auth');
+const isAuthorizedUser = require('../isAuthorizedUser');
+const logger = require('../logger');
+const auth = require('../auth');
 
 const urlShortener = (req, res) => {
     const URL = req.body.url;
@@ -34,7 +35,7 @@ const urlShortener = (req, res) => {
             res.end('Please enter a valid http/https URL\n');
         }
     } else {
-        logger.error('Unauthorized user visit ' + JSON.stringify(req.ipInfo));
+        logger.error('Unauthorized user visit ' + JSON.stringify(req.ip));
         responseStatus === 401 ? res.status(responseStatus).send('Unauthorized \n') : res.status(responseStatus).send('Forbidden \n');
     }
 };
