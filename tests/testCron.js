@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs');
 const { promisify } = require('util');
 const readDirAsync = promisify(fs.readdir);
@@ -38,13 +40,16 @@ readDirAsync(uploadsPath())
                 // console.log('File will be deleted', file.file, 'retension', file.retention);
                 deleteAsync(uploadsPath(file.file))
                     .then(() => {
+                        // eslint-disable-next-line
                         console.log('Successsfully deleted the file', file.file);
                     }).catch(err => {
+                        // eslint-disable-next-line
                         console.error('Error while deleting', err);
                     });
             }
         });
     })
     .catch(err => {
+        // eslint-disable-next-line
         console.error('Error in directory reading', err);
     });

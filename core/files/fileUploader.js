@@ -1,9 +1,10 @@
+'use strict';
+
 const { promisify } = require('util');
-const reqLib = require('app-root-path').require;
-const upload = promisify(reqLib('core/files/diskstorage').upload);
-const isAuthorizedUser = reqLib('core/isAuthorizedUser');
-const logger = reqLib('core/logger');
-const db = reqLib('core/db');
+const upload = promisify(require('./diskstorage').upload);
+const isAuthorizedUser = require('../isAuthorizedUser');
+const logger = require('../logger');
+const db = require('../db');
 
 const fileUploader = (req, res) => {
     const API_KEY_HEADER = req.get('api-key');
@@ -27,7 +28,7 @@ const fileUploader = (req, res) => {
                 res.end('Something went wrong while uploading the file \n' + err);
             });
     } else {
-        logger.error('Unauthorized user visit ' + JSON.stringify(req.ipInfo));
+        logger.error('Unauthorized user visit ' + JSON.stringify(req.ip));
         responseStatus === 401 ? res.status(responseStatus).send('Unauthorized \n') : res.status(responseStatus).send('Forbidden \n');
     }
 };

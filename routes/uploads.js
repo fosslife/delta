@@ -1,10 +1,11 @@
+'use strict';
+
 const uploads = require('express').Router();
-const reqLib = require('app-root-path').require;
-const db = reqLib('core/db');
-const logger = reqLib('core/logger');
-const fileUploader = reqLib('core/files/fileUploader');
-const urlShortner = reqLib('core/urls/urlShortner');
-const getFile = reqLib('core/files/getFile');
+const db = require('../core/db');
+const logger = require('../core/logger');
+const fileUploader = require('../core/files/fileUploader');
+const urlShortner = require('../core/urls/urlShortner');
+const getFile = require('../core/files/getFile');
 
 uploads.post('/', (req, res) => {
     const requestBody = req.body;
@@ -17,7 +18,7 @@ uploads.post('/', (req, res) => {
     }
 });
 
-uploads.get('/:file', (req, res, next) => {
+uploads.get('/:file', (req, res) => {
     // console.log(req.headers['user-agent']);
     const requestedFile = req.params.file;
     logger.info('Serving file ' + requestedFile);

@@ -2,11 +2,10 @@
 
 const multer = require('multer');
 const path = require('path');
-const reqLib = require('app-root-path').require;
-const { encode } = reqLib('core/urls/shortURL');
-const db = reqLib('core/db');
+const { encode } = require('../urls/shortURL');
+const db = require('../db');
 const { existsSync, mkdirSync } = require('fs');
-const auth = reqLib('core/auth');
+const auth = require('../auth');
 
 const storage = multer.diskStorage({
     // path.resolve(__dirname, '..', '..', 'uploads')

@@ -19,6 +19,8 @@
  * 123456789 <=> pgK8p
  */
 
+'use strict';
+
 const _alphabet = '23456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ-_';
 const _base = _alphabet.length;
 
