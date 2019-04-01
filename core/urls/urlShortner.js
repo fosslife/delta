@@ -21,16 +21,17 @@ const urlShortener = (req, res) => {
             if (specialURL) {
                 const fullURL = `${domain}${specialURL}`;
                 db.get('collection').push({ originalURL: URL, short: specialURL, type: 'url' }).write();
+                db.set('uniqueID', uid + 1).write();
                 res.write(fullURL);
                 res.end('\n');
             } else {
                 const shortenedURL = encode(uid);
                 const fullURL = `${domain}${shortenedURL}`;
                 db.get('collection').push({ originalURL: URL, short: shortenedURL, type: 'url' }).write();
+                db.set('uniqueID', uid + 1).write();
                 res.write(fullURL);
                 res.end('\n');
             }
-            db.set('uniqueID', uid + 1).write();
         } else {
             res.end('Please enter a valid http/https URL\n');
         }
