@@ -1,9 +1,9 @@
 {
-    "auth" : {
-        "API_KEY" : "a"
-    },
     "env" : "DEVELOPMENT",
-    "domainUrl" : "sprk.pw",
     "timeZone" : "Asia/Kolkata",
-    "cron": "5 4 * * sun"
+    "users" : [
+        [ "spark", "s", "https://i.sprk.pw/"],
+        [ "pwnj", "p", "https://pwnj.pw/"]
+    ],
+    "cron": "10 5 * 1-12/2"
 }

@@ -1,12 +1,10 @@
-const { promisify } = require('util');
-const reqLib = require('app-root-path').require;
-const upload = promisify(reqLib('core/files/diskstorage').upload);
-const isAuthorizedUser = reqLib('core/isAuthorizedUser');
-const logger = reqLib('core/logger');
-const db = reqLib('core/db');
-const { env, domainUrl } = reqLib('config');
+'use strict';
 
-const DOMAIN = env === 'PROD' ? domainUrl : 'http://localhost:3000/';
+const { promisify } = require('util');
+const upload = promisify(require('./diskstorage').upload);
+const isAuthorizedUser = require('../isAuthorizedUser');
+const logger = require('../logger');
+const db = require('../db');
 
 const fileUploader = (req, res) => {
     const API_KEY_HEADER = req.get('api-key');
@@ -16,21 +14,21 @@ const fileUploader = (req, res) => {
             .then(() => {
                 const originalName = req.file.originalname;
                 const shortened = req.file.url;
-                const filename = req.file.filename;
+                const filepath = req.file.path;
                 logger.info('Uploading ' + JSON.stringify(originalName) + ' as ' + shortened);
                 db
                     .get('collection')
-                    .push({ 'originalName': originalName, 'short': shortened, 'type': 'file', 'filename': filename })
+                    .push({ 'originalName': originalName, 'short': shortened, 'type': 'file', 'filepath': filepath })
                     .write();
-                const url = `${DOMAIN}${req.file.url}\n`;
+                const url = `${req.file.domain}${req.file.url}\n`;
                 res.end(url);
             })
             .catch(err => {
                 logger.error('Error while uploading the file ' + err);
-                res.end('Something went wrong while uploading the file \n');
+                res.end('Something went wrong while uploading the file \n' + err);
             });
     } else {
-        logger.error('Unauthorized user visit ' + JSON.stringify(req.ipInfo));
+        logger.error('Unauthorized user visit ' + JSON.stringify(req.ip));
         responseStatus === 401 ? res.status(responseStatus).send('Unauthorized \n') : res.status(responseStatus).send('Forbidden \n');
     }
 };
