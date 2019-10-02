@@ -6,7 +6,7 @@ module.exports = {
         es6: true,
         node: true
     },
-    extends: 'eslint:recommended',
+    extends: ['eslint:recommended', 'prettier'],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly'
@@ -15,11 +15,6 @@ module.exports = {
         ecmaVersion: 2018
     },
     rules: {
-        indent: 'error',
-        'linebreak-style': 'error',
-        quotes: [ 'error', 'single' ],
-        semi: 'error',
-        strict: 'error',
-        'eol-last': 'error'
+        strict: 'error'
     }
 };
