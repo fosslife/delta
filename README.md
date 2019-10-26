@@ -97,4 +97,4 @@ And, If spark makes a request to the server with his own api key, the server wil
 
 ## Licence
 
-delta is Licensed under [MIT](https://github.com/Sparkenstein/sprk/blob/master/LICENSE)
+delta is Licensed under [MIT](https://github.com/fosslife/sprk/blob/master/LICENSE)
