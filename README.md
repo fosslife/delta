@@ -1,6 +1,6 @@
-# sprk.pw file uploader
+# Delta - file uploader + url shortner
 
-`sprk` is a small hobby project that I did in my free time. It's a self-hosted file uploader + URL shortner. In short, you can fire a simple `curl` or any other equivalent command with a file name, and that file will be uploaded to your server, after that you'll have a short url as a reponse of upload. Like, if you upload your `user_environment_configuration_fedora.conf` to server, you'll have something like `sma.ll/y7A` in return. where `sma.ll` is your server. After than anyone with the URL with them, can access this file with a simple `GET` request, even from browser. 
+`delta` is a small hobby project that I did in my free time. It's a self-hosted file uploader + URL shortner. In short, you can fire a simple `curl` or any other equivalent command with a file name, and that file will be uploaded to your server, after that you'll have a short url as a reponse of upload. Like, if you upload your `user_environment_configuration_fedora.conf` to server, you'll have something like `sma.ll/y7A` in return. where `sma.ll` is your server. After than anyone with the URL with them, can access this file with a simple `GET` request, even from browser. 
 
 ## Demo
 
@@ -21,8 +21,8 @@
 The module is a simple express server with some configuration. To set it up follow the steps:
 
 ##### Checkout project
-  - `git clone https://github.com/Sparkenstein/sprk.git` OR
-  - Download zip from [master](https://github.com/Sparkenstein/sprk/archive/master.zip) branch
+  - `git clone https://github.com/fosslife/delta.git` OR
+  - Download zip from [master](https://github.com/fosslife/delta/archive/master.zip) branch
 ##### Configuration
   - `apiKey : 'RANDOM_LONG_STRING'`
     To generate a random string, you can run 
@@ -64,15 +64,15 @@ Considering apiKey = 1234:
  - To upload a file called dogs.jpg
    ⇒ `curl -H 'api-key: 1234' -F file=@dogs.jpg http://url.com/`
  - To shorten a URL, say this repository
-   ⇒ `curl -H 'api-key: 1234' -d 'url=https://github.com/Sparkenstein/sprk.git' http://url.com/`
- - To shorten custom URL, again this repository, to `sprk`
-   ⇒ `curl -H 'api-key: 1234' -d 'url=https://github.com/Sparkenstein/sprk.git' -d 'custom=sprk' http://url.com/`
+   ⇒ `curl -H 'api-key: 1234' -d 'url=https://github.com/fosslife/delta.git' http://url.com/`
+ - To shorten custom URL, again this repository, to `delta`
+   ⇒ `curl -H 'api-key: 1234' -d 'url=https://github.com/fosslife/dekta.git' -d 'custom=dlta' http://url.com/`
 
 ## Multiuser
 
-sprk is a private file uploader, and it's supposed to be used for personal use only. Unlike many other famous file uploaders it's not open to all. for that purpose, you can just keep your API key simple like `a` or something and distribute it publicly somewhere so that everyone can use your servers instance. 
+delta is a private file uploader, and it's supposed to be used for personal use only. Unlike many other famous file uploaders it's not open to all. for that purpose, you can just keep your API key simple like `a` or something and distribute it publicly somewhere so that everyone can use your servers instance. 
 But what if you don't want to distribute your api key but still let other people use the server? what if each users data is supposed to be stored in different directory? what if other users don't want your hostname in return but something different?
-:grin: sprk supports all of it. `multiuser` branch lets you host sprk for multiple users on the same instance. just edit the given `config.json` and you are good to go. The structure of `config.json` is a littlebit different than that of master branch
+:grin: delta supports all of it. `multiuser` branch lets you host delta for multiple users on the same instance. just edit the given `config.json` and you are good to go. The structure of `config.json` is a littlebit different than that of master branch
 
  - Everything is inside a `users` array
  - First element represents the name of the user.
@@ -97,4 +97,4 @@ And, If spark makes a request to the server with his own api key, the server wil
 
 ## Licence
 
-sprk is Licensed under [MIT](https://github.com/Sparkenstein/sprk/blob/master/LICENSE)
+delta is Licensed under [MIT](https://github.com/Sparkenstein/sprk/blob/master/LICENSE)

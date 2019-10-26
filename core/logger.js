@@ -9,7 +9,7 @@ const logger = createLogger({
     format: combine(
         splat(),
         simple(),
-        label({ label: 'sprk server' }),
+        label({ label: 'delta server' }),
         timestamp({
             format: 'MM-DD-YYYY hh:mm:ss A',
         }),
