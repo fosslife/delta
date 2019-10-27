@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = {
-    env: 'DEVELOPMENT',
     timeZone: 'Asia/Kolkata',
     users: [
         ['spark', 's', 'https://i.sprk.pw/'],

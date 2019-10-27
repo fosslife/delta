@@ -5,12 +5,11 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const job = require('./core/cron');
-const { env } = require('./config');
 const { promisify } = require('util');
 const db = require('./core/db');
 const logger = require('./core/logger');
 
+const { NODE_ENV: env } = process.env;
 const uploads = require('./routes/router');
 
 /**
@@ -26,7 +25,8 @@ const uploadsPath = (childPath = '') => {
     return path.resolve(__dirname, 'uploads', childPath);
 };
 
-if (env === 'PROD') {
+if (env === 'production') {
+    const job = require('./core/cron');
     job.start();
     logger.info('Cronjob starting in production mode');
 }
