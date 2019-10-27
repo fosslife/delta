@@ -49,7 +49,9 @@ const job = new CronJob(
             if (diff > fileStats.retention) {
                 await deleteAsync(uploadsPath(fileStats.file));
                 await db.sadd(`deleted`, fileStats.file);
-                await db.srem('urls', fileStats.file.split('.')[0]);
+                const shortName = fileStats.file.split('.')[0];
+                await db.srem('urls', shortName);
+                await db.del(`short:${shortName}`);
                 logger.info('Successsfully deleted the file ' + fileStats.file);
             }
         }
