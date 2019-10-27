@@ -1,22 +1,37 @@
+/* eslint-disable */
 'use strict';
 
+const lorem = require('lorem-ipsum');
 const fs = require('fs');
 const { promisify } = require('util');
-const readDirAsync = promisify(fs.readdir);
 const path = require('path');
-const { differenceInDays } = require('date-fns');
+
+const readDirAsync = promisify(fs.readdir);
+const exec = promisify(require('child_process').exec);
+const apendFile = promisify(require('fs').appendFile);
+const { format, differenceInDays } = require('date-fns');
 const deleteAsync = promisify(fs.unlink);
 
 const MIN_AGE = 1; // DAYS
 const MAX_AGE = 30; // DAYS
-const MAX_SIZE = 2000; // 2MB
+const MAX_SIZE = 1000 * 1024 * 1024; // 1MB
 
 function uploadsPath(childPath = '') {
     return path.resolve(__dirname, '../testUploads', childPath);
 }
 
+function generateRandomDate(start, end) {
+    return new Date(
+        start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    );
+}
+
 function getRetentionPeriod(stat) {
-    return MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
+    return (
+        MIN_AGE +
+        (-MAX_AGE + MIN_AGE) *
+            Math.pow(parseInt(stat.size / 1000.0) / MAX_SIZE - 1, 3)
+    );
 }
 
 function getFileStats(file) {
@@ -26,30 +41,66 @@ function getFileStats(file) {
         file,
         size: parseInt(stat.size / 1000.0),
         date: stat.mtime,
-        retention: parseInt(retention),
+        retention: parseInt(retention)
     };
 }
+const execCommands = [];
 
-readDirAsync(uploadsPath())
-    .then(files => {
-        files.map(file => {
-            return getFileStats(file);
-        }).map(file => {
-            const diff = differenceInDays(new Date(), file.date);
-            if (diff > file.retention) {
-                // console.log('File will be deleted', file.file, 'retension', file.retention);
-                deleteAsync(uploadsPath(file.file))
-                    .then(() => {
-                        // eslint-disable-next-line
-                        console.log('Successsfully deleted the file', file.file);
-                    }).catch(err => {
-                        // eslint-disable-next-line
-                        console.error('Error while deleting', err);
-                    });
-            }
+async function main() {
+    // Create test uploads folder
+    if (!fs.existsSync('testUploads')) {
+        fs.mkdirSync('testUploads');
+    }
+    // create 30 random upload files
+    for (let i = 0; i < 30; i++) {
+        const id = Math.random()
+            .toString(26)
+            .substring(7);
+        const filename = id + '.txt';
+        const randomDate = format(
+            generateRandomDate(
+                new Date('27 Sept 2019'),
+                new Date('26 Oct 2019')
+            ),
+            'YYYYMMDDhhmm'
+        );
+        // Modify their file attributes with random 'past' date
+        await exec('touch -a -m -t ' + randomDate + ' testUploads/' + filename);
+        // fill them with random data
+        const lor = lorem({
+            count: Math.floor(Math.random() * 5000),
+            units: 'paragraphs'
         });
-    })
-    .catch(err => {
-        // eslint-disable-next-line
-        console.error('Error in directory reading', err);
-    });
+        await apendFile('testUploads/' + filename, lor);
+        const execString = `touch -a -m -t ${randomDate} testUploads/${filename}`;
+
+        execCommands.push(execString);
+    }
+
+    // execute the modification command
+    for (const i of execCommands) {
+        await exec(i);
+    }
+
+    const files = await readDirAsync(uploadsPath());
+    for (const file of files) {
+        const fileStats = getFileStats(file);
+        const diff = differenceInDays(new Date(), fileStats.date);
+        if (diff > fileStats.retention) {
+            await deleteAsync(uploadsPath(fileStats.file));
+            console.log(
+                `Deleting ${fileStats.file} as ${diff} > ${
+                    fileStats.retention
+                } created at ${format(fileStats.date, 'DD MMM YYYY')} Size: ${
+                    fileStats.size
+                }`
+            );
+        }
+    }
+
+    // Delete generated test files
+    // fs.rmdirSync("testUploads");   => node can't delete folder that's not empty?
+    exec('rm -rf testUploads/');
+}
+
+main();
