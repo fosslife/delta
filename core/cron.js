@@ -41,10 +41,6 @@ const getRetentionPeriod = stat => {
 const job = new CronJob(
     cron,
     async () => {
-        const deletedId = await db.get('deletedId');
-        if (!deletedId) {
-            await db.incr('deletedId');
-        }
         logger.info('Running Cron job for deleting files');
         const files = await readDirAsync(uploadsPath());
         for (const file of files) {
@@ -52,7 +48,8 @@ const job = new CronJob(
             const diff = differenceInDays(new Date(), fileStats.date);
             if (diff > fileStats.retention) {
                 await deleteAsync(uploadsPath(fileStats.file));
-                await db.set(`deleted:${deletedId}`, fileStats.file);
+                await db.sadd(`deleted`, fileStats.file);
+                await db.srem('urls', fileStats.file.split('.')[0]);
                 logger.info('Successsfully deleted the file ' + fileStats.file);
             }
         }
