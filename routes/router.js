@@ -28,10 +28,9 @@ uploads.get('/:link', async (req, res) => {
         const fileName = record.path;
         getFile(fileName, req, res);
     } else if (record && record.type === 'url') {
-        console.log('GOT', record);
         res.redirect(record.original);
     } else {
-        res.end('Cannot find the specified record');
+        res.end('Incorrect link or record is expired and cleaned by cron');
     }
 });
 

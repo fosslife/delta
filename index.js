@@ -11,7 +11,7 @@ const { promisify } = require('util');
 const db = require('./core/db');
 const logger = require('./core/logger');
 
-const uploads = require('./routes/uploads');
+const uploads = require('./routes/router');
 
 /**
  * Middlewares and inits
