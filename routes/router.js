@@ -24,10 +24,10 @@ uploads.get('/:link', async (req, res) => {
     logger.info('Serving file ' + request);
     const record = await db.hgetall(`short:${request}`);
     logger.info('Found record' + JSON.stringify(record));
-    if (record && record.type === 'file') {
+    if (record.type === 'file') {
         const fileName = record.path;
         getFile(fileName, req, res);
-    } else if (record && record.type === 'url') {
+    } else if (record.type === 'url') {
         res.redirect(record.original);
     } else {
         res.end('Incorrect link or record is expired and cleaned by cron');
