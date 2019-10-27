@@ -26,38 +26,56 @@ const getFileStats = file => {
         file,
         size: parseInt(stat.size / 1000.0),
         date: stat.mtime,
-        retention: parseInt(retention),
+        retention: parseInt(retention)
     };
 };
 
 const getRetentionPeriod = stat => {
-    return MIN_AGE + (-MAX_AGE + MIN_AGE) * Math.pow((parseInt(stat.size / 1000.0) / MAX_SIZE - 1), 3);
+    return (
+        MIN_AGE +
+        (-MAX_AGE + MIN_AGE) *
+            Math.pow(parseInt(stat.size / 1000.0) / MAX_SIZE - 1, 3)
+    );
 };
 
-const job = new CronJob(cron, () => {
-    logger.info('Running Cron job for deleting files');
-    readDirAsync(uploadsPath())
-        .then(files => {
-            files.map(file => {
-                return getFileStats(file);
-            }).map(file => {
-                const diff = differenceInDays(new Date(), file.date);
-                if (diff > file.retention) {
-                    deleteAsync(uploadsPath(file.file))
-                        .then(() => {
-                            db.get('deleted')
-                                .push(file.file)
-                                .write();
-                            logger.info('Successsfully deleted the file ' + file.file);
-                        }).catch(err => {
-                            logger.error('Error while deleting' + err);
-                        });
-                }
+const job = new CronJob(
+    cron,
+    async () => {
+        const deletedId = await db.get('deletedId');
+        if (!deletedId) {
+            await db.incr('deletedId');
+        }
+        logger.info('Running Cron job for deleting files');
+        readDirAsync(uploadsPath())
+            .then(files => {
+                files
+                    .map(file => {
+                        return getFileStats(file);
+                    })
+                    .map(file => {
+                        const diff = differenceInDays(new Date(), file.date);
+                        if (diff > file.retention) {
+                            deleteAsync(uploadsPath(file.file))
+                                .then(() => {
+                                    db.set(`deleted:${deletedId}`, file.file);
+                                    logger.info(
+                                        'Successsfully deleted the file ' +
+                                            file.file
+                                    );
+                                })
+                                .catch(err => {
+                                    logger.error('Error while deleting' + err);
+                                });
+                        }
+                    });
+            })
+            .catch(err => {
+                logger.error('Error in directory reading' + err);
             });
-        })
-        .catch(err => {
-            logger.error('Error in directory reading' + err);
-        });
-}, null, false, timeZone); // Also exposes .start() chained method
+    },
+    null,
+    false,
+    timeZone
+); // Also exposes .start() chained method
 
 module.exports = job;
