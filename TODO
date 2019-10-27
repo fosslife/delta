@@ -1,0 +1,8 @@
+ - check if custom url exists before saving
+ - password protection
+ - file encryption
+ - move cron configuration to config
+ - cron-job should log in different files
+
+add readme `u` method of usage
+make asciinema for latest demo
