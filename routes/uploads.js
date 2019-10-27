@@ -18,14 +18,15 @@ uploads.post('/', (req, res) => {
     }
 });
 
-uploads.get('/:file', (req, res) => {
+uploads.get('/:link', async (req, res) => {
     // console.log(req.headers['user-agent']);
-    const requestedFile = req.params.file;
-    logger.info('Serving file ' + requestedFile);
-    const record = db.get('collection').find({ short: requestedFile }).value();
+    const request = req.params.link;
+    logger.info('Serving file ' + request);
+    const record = await db.hgetall(`short:${request}`);
+    console.log(record);
     logger.info('Found record' + JSON.stringify(record));
     if (record && record.type === 'file') {
-        const fileName = record.filepath;
+        const fileName = record.path;
         getFile(fileName, req, res);
     } else if (record && record.type === 'url') {
         res.redirect(record.originalURL);
