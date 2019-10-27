@@ -24,10 +24,10 @@ const urlShortener = async (req, res) => {
                 ? `${domain}${customOrAuto}`
                 : `${domain}${customOrAuto}`;
             const prevExists = await db.sismember('urls', customOrAuto);
-            if (!prevExists) {
+            if (prevExists) {
                 if (specialURL) {
                     res.end(
-                        `URL with ID ${customOrAuto} already exists. Try another custom path`
+                        `URL with ID ${customOrAuto} already exists. Try another custom path\n`
                     );
                 } else {
                     await db.incr('index');
@@ -46,8 +46,8 @@ const urlShortener = async (req, res) => {
                     'url'
                 );
                 await db.incr('index');
-                res.write(fullURL);
-                res.end('\n'); // Workaround for zsh adding '%' at the end
+                await db.sadd('urls', customOrAuto);
+                res.end(`${fullURL}\n`);
             }
         } else {
             logger.error('User gave invalid URL');
