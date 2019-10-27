@@ -7,7 +7,7 @@ const isAuthorizedUser = require('../isAuthorizedUser');
 const logger = require('../logger');
 const auth = require('../auth');
 
-const urlShortener = (req, res) => {
+const urlShortener = async (req, res) => {
     const URL = req.body.url;
     const API_KEY_HEADER = req.get('api-key');
     /* It's a workaround, it could be better */
@@ -17,28 +17,30 @@ const urlShortener = (req, res) => {
         const specialURL = req.body.custom;
         const isURL = validURL.isWebUri(URL);
         if (isURL) {
-            const uid = db.get('uniqueID').value();
-            if (specialURL) {
-                const fullURL = `${domain}${specialURL}`;
-                db.get('collection').push({ originalURL: URL, short: specialURL, type: 'url' }).write();
-                db.set('uniqueID', uid + 1).write();
-                res.write(fullURL);
-                res.end('\n');  // Workaround for zsh adding '%' at the end
-            } else {
-                const shortenedURL = encode(uid);
-                const fullURL = `${domain}${shortenedURL}`;
-                db.get('collection').push({ originalURL: URL, short: shortenedURL, type: 'url' }).write();
-                db.set('uniqueID', uid + 1).write();
-                res.write(fullURL);
-                res.end('\n');    // Workaround for zsh adding '%' at the end
-            }
+            const uid = await db.get('index');
+            // part of URL either custom or incremented-auto-url
+            const customOrAuto = specialURL || encode(uid);
+            console.log('==>', uid);
+            const fullURL = specialURL
+                ? `${domain}${customOrAuto}`
+                : `${domain}${customOrAuto}`;
+            await db.hset(
+                `short:${customOrAuto}`,
+                'original',
+                URL,
+                'type',
+                'url'
+            );
+            await db.incr('index');
+            res.write(fullURL);
+            res.end('\n'); // Workaround for zsh adding '%' at the end
         } else {
             logger.error('User gave invalid URL');
-            res.end('Please enter a valid http/https URL\n');
+            res.end('Please enter a valid resource URL\n');
         }
     } else {
         logger.error('Unauthorized user visit ' + JSON.stringify(req.ip));
-        responseStatus === 401 ? res.status(responseStatus).send('Unauthorized \n') : res.status(responseStatus).send('Forbidden \n');
+        res.status(responseStatus).end('\n');
     }
 };
 

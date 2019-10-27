@@ -23,13 +23,13 @@ uploads.get('/:link', async (req, res) => {
     const request = req.params.link;
     logger.info('Serving file ' + request);
     const record = await db.hgetall(`short:${request}`);
-    console.log(record);
     logger.info('Found record' + JSON.stringify(record));
     if (record && record.type === 'file') {
         const fileName = record.path;
         getFile(fileName, req, res);
     } else if (record && record.type === 'url') {
-        res.redirect(record.originalURL);
+        console.log('GOT', record);
+        res.redirect(record.original);
     } else {
         res.end('Cannot find the specified record');
     }
