@@ -1,19 +1,10 @@
 'use strict';
+const Redis = require('ioredis');
+const db = new Redis();
 
-const lowdb = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
-const { resolve } = require('path');
-const { existsSync, mkdirSync } = require('fs');
-const storageExists = existsSync(resolve(__dirname, '..', 'storage'));
-
-if (!storageExists) {
-    mkdirSync(resolve(__dirname, '..', 'storage'));
-}
-
-const adapter = new FileSync(resolve(__dirname, '..', 'storage', 'db.json'), {
-    serialize: obj => JSON.stringify(obj),
-    deserialize: data => JSON.parse(data)
-});
-const db = lowdb(adapter);
+(async () => {
+    const monitor = await db.monitor();
+    monitor.on('monitor', console.log);
+})();
 
 module.exports = db;

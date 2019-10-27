@@ -10,10 +10,16 @@ const auth = require('../auth');
 const storage = multer.diskStorage({
     // path.resolve(__dirname, '..', '..', 'uploads')
     destination: (req, file, cb) => {
-        const [ username, , domain ] = auth(req.get('api-key'));
+        const [username, , domain] = auth(req.get('api-key'));
         file.domain = domain;
         // TODO: Change this uglyness
-        const uniquePath = path.resolve(__dirname, '..', '..', 'uploads', username);
+        const uniquePath = path.resolve(
+            __dirname,
+            '..',
+            '..',
+            'uploads',
+            username
+        );
         const rootPath = path.resolve(__dirname, '..', '..', 'uploads');
         // TODO: Convert this to Async operations
         if (!existsSync(rootPath)) {
@@ -24,11 +30,11 @@ const storage = multer.diskStorage({
         }
         cb(null, uniquePath);
     },
-    filename: (req, file, cb) => {
-        const uid = db.get('uniqueID').value();
+    filename: async (req, file, cb) => {
+        const uid = await db.get('index');
         const id = encode(uid);
-        db.set('uniqueID', uid + 1).write();
-        file.url = `${id}`; // + path.extname(file.originalname); ${file.domain}
+        db.incr('index');
+        file.url = id;
         cb(null, id + path.extname(file.originalname)); //
     }
 });

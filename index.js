@@ -16,8 +16,7 @@ const uploads = require('./routes/uploads');
 /**
  * Middlewares and inits
  */
-
-db.defaults({ collection: [], deleted: [], uniqueID: 1000 }).write();
+db.incrby('index', 1000); // Initialize index by 1000
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -35,10 +34,13 @@ if (env === 'PROD') {
  * Router
  */
 
-app.get('/favicon.ico', (req, res) => res.sendFile(uploadsPath('../favicon.ico')));
+app.get('/favicon.ico', (req, res) =>
+    res.sendFile(uploadsPath('../favicon.ico'))
+);
 
 app.use('/', uploads);
 
 app.listen(3000, () =>
     // eslint-disable-next-line
-    console.log('Server started at port 3000'));
+    console.log('Server started at port 3000')
+);
