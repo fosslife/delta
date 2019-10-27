@@ -13,7 +13,7 @@ const db = require('./db');
 
 const MIN_AGE = 1; // DAYS
 const MAX_AGE = 30; // DAYS
-const MAX_SIZE = 2000; // 2MB
+const MAX_SIZE = 2000 * 1024 * 1024; // 2MB
 
 const uploadsPath = (childPath = '') => {
     return path.resolve(__dirname, '../uploads', childPath);
