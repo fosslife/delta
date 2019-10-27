@@ -1,4 +1,3 @@
- - check if custom url exists before saving
  - password protection
  - file encryption
  - move cron configuration to config

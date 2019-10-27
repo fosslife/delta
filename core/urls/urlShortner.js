@@ -23,16 +23,32 @@ const urlShortener = async (req, res) => {
             const fullURL = specialURL
                 ? `${domain}${customOrAuto}`
                 : `${domain}${customOrAuto}`;
-            await db.hset(
-                `short:${customOrAuto}`,
-                'original',
-                URL,
-                'type',
-                'url'
-            );
-            await db.incr('index');
-            res.write(fullURL);
-            res.end('\n'); // Workaround for zsh adding '%' at the end
+            const prevExists = await db.sismember('urls', customOrAuto);
+            if (!prevExists) {
+                if (specialURL) {
+                    res.end(
+                        `URL with ID ${customOrAuto} already exists. Try another custom path`
+                    );
+                } else {
+                    await db.incr('index');
+                    // Can give specific message but don't want user to know that URL with
+                    // same ID already exists as it's random not custom. So generic error.
+                    res.end(
+                        `Error occurred, try again. If error persists, file an Issue`
+                    );
+                }
+            } else {
+                await db.hset(
+                    `short:${customOrAuto}`,
+                    'original',
+                    URL,
+                    'type',
+                    'url'
+                );
+                await db.incr('index');
+                res.write(fullURL);
+                res.end('\n'); // Workaround for zsh adding '%' at the end
+            }
         } else {
             logger.error('User gave invalid URL');
             res.end('Please enter a valid resource URL\n');
