@@ -46,32 +46,16 @@ const job = new CronJob(
             await db.incr('deletedId');
         }
         logger.info('Running Cron job for deleting files');
-        readDirAsync(uploadsPath())
-            .then(files => {
-                files
-                    .map(file => {
-                        return getFileStats(file);
-                    })
-                    .map(file => {
-                        const diff = differenceInDays(new Date(), file.date);
-                        if (diff > file.retention) {
-                            deleteAsync(uploadsPath(file.file))
-                                .then(() => {
-                                    db.set(`deleted:${deletedId}`, file.file);
-                                    logger.info(
-                                        'Successsfully deleted the file ' +
-                                            file.file
-                                    );
-                                })
-                                .catch(err => {
-                                    logger.error('Error while deleting' + err);
-                                });
-                        }
-                    });
-            })
-            .catch(err => {
-                logger.error('Error in directory reading' + err);
-            });
+        const files = await readDirAsync(uploadsPath());
+        for (const file of files) {
+            const fileStats = getFileStats(file);
+            const diff = differenceInDays(new Date(), fileStats.date);
+            if (diff > fileStats.retention) {
+                await deleteAsync(uploadsPath(fileStats.file));
+                await db.set(`deleted:${deletedId}`, fileStats.file);
+                logger.info('Successsfully deleted the file ' + fileStats.file);
+            }
+        }
     },
     null,
     false,
