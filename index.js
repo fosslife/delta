@@ -15,7 +15,13 @@ const uploads = require('./routes/router');
 /**
  * Middlewares and inits
  */
-db.incrby('index', 1000); // Initialize index by 1000
+// Initialize index by 1000
+db.get('index').then(id => {
+    if (!id) {
+        db.incrby('index', 1000);
+    }
+});
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
