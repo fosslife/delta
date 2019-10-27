@@ -19,7 +19,6 @@ uploads.post('/', (req, res) => {
 });
 
 uploads.get('/:link', async (req, res) => {
-    // console.log(req.headers['user-agent']);
     const request = req.params.link;
     logger.info('Serving file ' + request);
     const record = await db.hgetall(`short:${request}`);

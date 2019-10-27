@@ -20,7 +20,6 @@ const urlShortener = async (req, res) => {
             const uid = await db.get('index');
             // part of URL either custom or incremented-auto-url
             const customOrAuto = specialURL || encode(uid);
-            console.log('==>', uid);
             const fullURL = specialURL
                 ? `${domain}${customOrAuto}`
                 : `${domain}${customOrAuto}`;
