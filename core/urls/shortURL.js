@@ -20,24 +20,25 @@
  */
 
 'use strict';
+function shuffled(str) {
+    return str
+        .split('')
+        .sort(() => 0.5 - Math.random())
+        .join('');
+}
 
-const _alphabet = '23456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ-_';
+const _alphabet = shuffled(
+    '23456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ-_'
+);
 const _base = _alphabet.length;
 
 module.exports = {
-    encode: function (num) {
+    encode: function(num) {
         var str = '';
         while (num > 0) {
             str = _alphabet.charAt(num % _base) + str;
             num = Math.floor(num / _base);
         }
         return str;
-    },
-    decode: function (str) {
-        var num = 0;
-        for (var i = 0; i < str.length; i++) {
-            num = num * _base + _alphabet.indexOf(str.charAt(i));
-        }
-        return num;
     }
 };
