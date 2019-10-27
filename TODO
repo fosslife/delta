@@ -1,10 +1,11 @@
  - password protection
  - file encryption
- - cron-job should log in different files
- - user should have any upload directory, make it configurable
  - make a set of shortened URLS
     - remove deleted URL from set and hset after cron job runs
  - auto deleting files? based on fixed time maybe
 
 add readme `u` method of usage
 make asciinema for latest demo
+
+wont do as of now
+ - cron-job should log in different files 

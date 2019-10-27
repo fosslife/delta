@@ -8,7 +8,7 @@ const { differenceInDays } = require('date-fns');
 const path = require('path');
 const deleteAsync = promisify(fs.unlink);
 const logger = require('./logger');
-const { timeZone, cron } = require('../config');
+const { timeZone, cron, uploadpath } = require('../config');
 const db = require('./db');
 
 const MIN_AGE = cron.min_age; // DAYS
@@ -16,7 +16,7 @@ const MAX_AGE = cron.max_age; // DAYS
 const MAX_SIZE = cron.max_size * 1024 * 1024; // 2MB
 
 const uploadsPath = (childPath = '') => {
-    return path.resolve(__dirname, '../uploads', childPath);
+    return path.resolve(uploadpath, childPath);
 };
 
 const getFileStats = file => {

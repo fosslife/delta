@@ -6,6 +6,7 @@ module.exports = {
         ['spark', 's', 'https://i.sprk.pw/'],
         ['pwnj', 'p', 'https://pwnj.pw/']
     ],
+    uploadpath: `${__dirname}/uploads`,
     cron: {
         schedule: '10 5 * 1-12/2',
         min_age: 1, // Minimum days to keep file

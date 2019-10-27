@@ -1,10 +1,11 @@
 'use strict';
 
 const { resolve } = require('path');
+const { uploadpath } = require('../../config');
 const logger = require('../logger');
 
 const uploadsPath = (childPath = '') => {
-    return resolve(__dirname, '..', '..', 'uploads', childPath);
+    return resolve(uploadpath, childPath);
 };
 
 const getFile = (filename, req, res) => {

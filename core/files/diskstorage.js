@@ -6,22 +6,14 @@ const { encode } = require('../urls/shortURL');
 const db = require('../db');
 const { existsSync, mkdirSync } = require('fs');
 const auth = require('../auth');
+const { uploadpath } = require('../../config');
 
 const storage = multer.diskStorage({
-    // path.resolve(__dirname, '..', '..', 'uploads')
     destination: (req, file, cb) => {
         const [username, , domain] = auth(req.get('api-key'));
         file.domain = domain;
-        // TODO: Change this uglyness
-        const uniquePath = path.resolve(
-            __dirname,
-            '..',
-            '..',
-            'uploads',
-            username
-        );
-        const rootPath = path.resolve(__dirname, '..', '..', 'uploads');
-        // TODO: Convert this to Async operations
+        const uniquePath = path.resolve(uploadpath, username);
+        const rootPath = path.resolve(uploadpath);
         if (!existsSync(rootPath)) {
             mkdirSync(rootPath);
         }

@@ -4,14 +4,12 @@
  */
 const express = require('express');
 const app = express();
-const path = require('path');
 const { promisify } = require('util');
 const db = require('./core/db');
 const logger = require('./core/logger');
 
 const { NODE_ENV: env } = process.env;
 const uploads = require('./routes/router');
-
 /**
  * Middlewares and inits
  */
@@ -27,10 +25,6 @@ app.use(express.json());
 
 express.response.sendFile = promisify(express.response.sendFile);
 
-const uploadsPath = (childPath = '') => {
-    return path.resolve(__dirname, 'uploads', childPath);
-};
-
 if (env === 'production') {
     const job = require('./core/cron');
     job.start();
@@ -40,9 +34,7 @@ if (env === 'production') {
  * Router
  */
 
-app.get('/favicon.ico', (req, res) =>
-    res.sendFile(uploadsPath('../favicon.ico'))
-);
+app.get('/favicon.ico', (req, res) => res.sendFile('./favicon.ico'));
 
 app.use('/', uploads);
 
