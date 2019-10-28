@@ -3,6 +3,7 @@
  - make a set of shortened URLS
     - remove deleted URL from set and hset after cron job runs
  - auto deleting files? based on fixed time maybe
+ - NON COLLIDING URLS *IMP*
 
 add readme `u` method of usage
 make asciinema for latest demo
