@@ -4,6 +4,7 @@
  */
 const express = require('express');
 const app = express();
+const helmet = require('helmet');
 const { promisify } = require('util');
 const db = require('./core/db');
 const logger = require('./core/logger');
@@ -22,6 +23,7 @@ db.get('index').then(id => {
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(helmet());
 
 express.response.sendFile = promisify(express.response.sendFile);
 
