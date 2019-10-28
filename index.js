@@ -7,7 +7,7 @@ const app = express();
 const { promisify } = require('util');
 const db = require('./core/db');
 const logger = require('./core/logger');
-
+const { resolve } = require('path');
 const { NODE_ENV: env } = process.env;
 const uploads = require('./routes/router');
 /**
@@ -34,9 +34,22 @@ if (env === 'production') {
  * Router
  */
 
-app.get('/favicon.ico', (req, res) => res.sendFile('./favicon.ico'));
+/**
+ * Note that favicon is kinda important here
+ * as all the routes are analogues /, /favicon, /:url are
+ * same for express, so if /favicon fails, it will try to
+ * search for /favicon in URLs instead :(
+ */
+app.get('/favicon.ico', (req, res) =>
+    res.sendFile(resolve(__dirname, './favicon.png'))
+);
 
 app.use('/', uploads);
+
+app.get('/', (req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain charset=us-ascii' });
+    res.end('Hello\n');
+});
 
 app.listen(3000, () =>
     // eslint-disable-next-line
