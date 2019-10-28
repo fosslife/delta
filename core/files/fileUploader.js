@@ -22,7 +22,6 @@ const fileUploader = (req, res) => {
                     'path',
                     filepath
                 );
-                await db.sadd('urls', shortened);
                 const url = `${req.file.domain}${req.file.url}\n`;
                 res.end(url);
             })
