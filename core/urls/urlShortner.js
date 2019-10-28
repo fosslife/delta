@@ -32,6 +32,13 @@ const urlShortener = async (req, res) => {
                 'type',
                 'url'
             );
+            if (req.body.lockwith) {
+                await db.hset(
+                    `short:${customOrAuto}`,
+                    'password',
+                    req.body.lockwith
+                );
+            }
             res.end(`${fullURL}\n`);
         } else {
             logger.error('User gave invalid URL');
