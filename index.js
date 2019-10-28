@@ -51,3 +51,11 @@ app.listen(3000, () =>
     // eslint-disable-next-line
     console.log('Server started at port 3000')
 );
+
+process.on('unhandledRejection', e => {
+    logger.error(e);
+});
+
+process.on('uncaughtException', e => {
+    logger.error(e);
+});
