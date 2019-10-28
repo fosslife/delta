@@ -1,9 +1,5 @@
- - file encryption
  - auto deleting files? based on fixed time maybe
  - Live reload config
 
 add readme `u` method of usage
 make asciinema for latest demo
-
-wont do as of now
- - cron-job should log in different files 
