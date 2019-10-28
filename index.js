@@ -51,7 +51,6 @@ async function main() {
     app.use('/', uploads);
 
     app.get('/', (req, res) => {
-        // res.writeHead(200, { 'Content-Type': 'text/plain charset=us-ascii' });
         res.sendFile(resolve(__dirname, 'welcome.txt'));
     });
 
