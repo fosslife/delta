@@ -2,7 +2,6 @@
 
 const multer = require('multer');
 const path = require('path');
-const { encode } = require('../urls/shortURL');
 const db = require('../db');
 const { existsSync, mkdirSync } = require('fs');
 const auth = require('../auth');
@@ -23,9 +22,8 @@ const storage = multer.diskStorage({
         cb(null, uniquePath);
     },
     filename: async (req, file, cb) => {
-        const uid = await db.get('index');
-        const id = encode(uid);
-        db.incr('index');
+        const id = await db.spop('genurls');
+        await db.publish('removed', 'remove');
         file.url = id;
         cb(null, id + path.extname(file.originalname)); //
     }
