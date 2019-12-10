@@ -8,7 +8,7 @@ module.exports = {
     ],
     uploadpath: `${__dirname}/uploads`,
     cron: {
-        schedule: '10 5 * 1-12/2',
+        schedule: '0 0 1 * *',
         min_age: 1, // Minimum days to keep file
         max_age: 30, // Maximym days to keep file
         max_size: 2000 // Size in KB to calculate retenstion period against
