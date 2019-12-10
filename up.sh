@@ -1,3 +1,4 @@
+apikey=spark1234
 usage(){
     cat << EndOfMessage
 up.sh - simple cUrl based client for delta
@@ -12,23 +13,23 @@ Args-
 
 Example:
 To upload file
-    ./up file filename.txt http://spark.pepe/
+    ./up.sh file filename.txt http://spark.pepe/
 To upload a file and password protect it
-    ./up file filename.txt password1234 http://spark.pepe/
+    ./up.sh file filename.txt password1234 http://spark.pepe/
 To shorten a URL
-    ./up url http://www.longurl.domain/path http://spark.pepe/
+    ./up.sh url http://www.longurl.domain/path http://spark.pepe/
 To shorten a URL and password protect it
-    ./up url http://www.longurl.domain/path password1234 http://spark.pepe/
+    ./up.sh url http://www.longurl.domain/path password1234 http://spark.pepe/
 EndOfMessage
 }
 
 uploadFile() {
     case $# in
         3 )
-            echo "Uploading file"
+            curl -H "api-key: $apikey" -F file=@$2 $3
             ;;
         4 )
-            echo "Uploading file with password"
+            curl -H "api-key: $apikey" -F file=@$2 -F lockwith=$3 $4
             ;;
         * )
             echo "Incorrect arguments, use --help"
