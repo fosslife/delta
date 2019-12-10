@@ -33,21 +33,26 @@ The module is a simple express server with some configuration. To set it up foll
 
 #### Configuration
 
--   `apiKey : 'RANDOM_LONG_STRING'`
-    To generate a random string, you can run
-    `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-    or
-    `date | md5sum | base64 | head -c 32`
--   `domainUrl: 'https://your.domain.url/'` Keep the trailing slash `/`
--   `timeZone: 'Your/Timezone'` This is used to run the cron job periodically according to your location
+Open config.js. it has multiple things you need to configure
+
+-   `users`: list of users with their own api-keys, name etc. Each user is another list of 1.User name 2. apiKey and 3. his own domain URL. eg: users: `[ ['John', 'abcd1234!@#', 'http://abcd.com/'], ..another user ]`
+    -   `name`: delta will categorize this users files in a seperate folder with this name. i.e. `John`'s files will be stored in folder called "john" and `Jack`'s will be in folder called "jack" etc.
+    -   `apiKey` : a random long string
+        To generate a random string, you can run
+        `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
+        or
+        `date | md5sum | base64 | head -c 32`
+    -   `domainUrl: 'https://your.domain.url/'` Keep the trailing slash `/`
+-   `timeZone`: 'Your/Timezone' This is used to run the cron job periodically according to your location
 
 #### Install dependencies
 
 -   Run `npm install` or `yarn install` or your favourite other tool :P
+-   make sure you have redis installed on your OS.
 
 #### Enjoy
 
--   Server is started, enjoy!
+-   run `npm start` or `yarn start`! Server is started, enjoy!
 
 ## Usage
 
