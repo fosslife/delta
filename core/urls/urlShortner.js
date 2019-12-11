@@ -32,11 +32,11 @@ const urlShortener = async (req, res) => {
                 'type',
                 'url'
             );
-            if (req.body.lockwith) {
+            if (req.body.pass) {
                 await db.hset(
                     `short:${customOrAuto}`,
                     'password',
-                    req.body.lockwith
+                    req.body.pass
                 );
             }
             res.end(`${fullURL}\n`);

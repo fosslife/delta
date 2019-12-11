@@ -22,11 +22,11 @@ const fileUploader = (req, res) => {
                     'path',
                     filepath
                 );
-                if (req.body.lockwith) {
+                if (req.body.pass) {
                     await db.hset(
                         `short:${shortened}`,
                         'password',
-                        req.body.lockwith
+                        req.body.pass
                     );
                 }
                 const url = `${req.file.domain}${req.file.url}\n`;
