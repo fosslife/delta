@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 const helmet = require('helmet');
 const { promisify } = require('util');
+const { port } = require('./config');
 const logger = require('./core/logger');
 const { resolve } = require('path');
 const { NODE_ENV: env } = process.env;
@@ -47,9 +48,9 @@ app.get('/', (req, res) => {
     res.sendFile(resolve(__dirname, 'welcome.txt'));
 });
 
-app.listen(3000, () =>
+app.listen(port, () =>
     // eslint-disable-next-line
-    console.log('Server started at port 3000')
+    console.log(`Server started at port ${port}`)
 );
 
 process.on('unhandledRejection', e => {
