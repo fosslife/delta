@@ -16,6 +16,12 @@ const urlShortener = async (req, res) => {
     if (responseStatus === 200) {
         logger.info(`User is authorised`);
         const specialURL = req.body.custom;
+        const customUrlExists = await db.hgetall(`short:${specialURL}`);
+        if (Object.keys(customUrlExists).length) {
+            return res.end(
+                `URL with name ${specialURL} already exists. try different URL`
+            );
+        }
         const isURL = validURL.isWebUri(URL);
         if (isURL) {
             logger.info(`User has given valid URL`);
