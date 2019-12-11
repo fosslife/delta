@@ -1,5 +1,4 @@
 p1:
-auto deleting files? based on fixed time maybe
 check duplicate custom urls
 give more options for databases (nedb? sqlite)
 
@@ -11,6 +10,10 @@ add readme `up.sh` method of usage
 make asciinema for latest demo
 Fix readme for latest features
     readme doesn't have anything about passwords
+
 p3:
 logging not working probably?
 live reload config
+
+p4:
+file encryption?

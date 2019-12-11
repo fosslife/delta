@@ -17,9 +17,10 @@ Ex: if you upload your `user_environment.conf` to server, you'll have something 
 -   :tada: Secured with API keys
 -   :family: Multiuser + Multidomain support on the same server (see [this](#multiuser))
 -   :collision: Configurable Cron job for deleting resources older than X time
--   :1234: "Never Clashing" Permanent ID's for generated URLs. they are not random, but infact incremental so no worries of clashing two URLs and also URLs are non back traceable, i.e. URL generator shuffles them randomly everytime server starts.
+-   :1234: "Never Clashing" Permanent ID's for generated URLs. they are not random, but infact incremental so no worries of
+    clashing two URLs and also URLs are non back traceable, i.e. URL generator shuffles them randomly everytime server starts.
+-   :bomb: self destructing links
 -   Coming
-    -   password protection
     -   file encryption
 
 ## Installation
