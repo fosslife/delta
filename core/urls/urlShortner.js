@@ -5,6 +5,7 @@ const validURL = require('valid-url');
 const isAuthorizedUser = require('../isAuthorizedUser');
 const logger = require('../logger');
 const auth = require('../auth');
+const { getExpiry } = require('../utils');
 
 const urlShortener = async (req, res) => {
     const URL = req.body.url;
@@ -38,6 +39,10 @@ const urlShortener = async (req, res) => {
                     'password',
                     req.body.pass
                 );
+            }
+            if (req.body.expires) {
+                const duration = getExpiry(req.body.expires);
+                await db.expire(`short:${customOrAuto}`, duration);
             }
             res.end(`${fullURL}\n`);
         } else {

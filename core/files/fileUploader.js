@@ -5,6 +5,7 @@ const upload = promisify(require('./diskstorage').upload);
 const isAuthorizedUser = require('../isAuthorizedUser');
 const logger = require('../logger');
 const db = require('../db');
+const { getExpiry } = require('../utils');
 
 const fileUploader = (req, res) => {
     const API_KEY_HEADER = req.get('api-key');
@@ -28,6 +29,10 @@ const fileUploader = (req, res) => {
                         'password',
                         req.body.pass
                     );
+                }
+                if (req.body.expires) {
+                    const duration = getExpiry(req.body.expires);
+                    await db.expire(`short:${shortened}`, duration);
                 }
                 const url = `${req.file.domain}${req.file.url}\n`;
                 res.end(url);
