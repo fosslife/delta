@@ -2,7 +2,9 @@
  - Live reload config
 
 add readme `up` method of usage
-    edit apikey in up.sh
+    edit hardoded apikey in up.sh
 make asciinema for latest demo
 give more options for databases (nedb? sqlite)
 check duplicate custom urls
+logging not working probably?
+cache earlier X redirects?
