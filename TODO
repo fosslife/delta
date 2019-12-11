@@ -1,5 +1,8 @@
  - auto deleting files? based on fixed time maybe
  - Live reload config
 
-add readme `u` method of usage
+add readme `up` method of usage
+    edit apikey in up.sh
 make asciinema for latest demo
+give more options for databases (nedb? sqlite)
+check duplicate custom urls
