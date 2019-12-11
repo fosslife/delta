@@ -9,6 +9,7 @@ cache earlier X redirects?
 add readme `up.sh` method of usage
     edit hardoded apikey in up.sh
 make asciinema for latest demo
+Fix readme for latest features
 
 p3:
 logging not working probably?
