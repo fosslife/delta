@@ -1,12 +1,13 @@
 'use strict';
 const Redis = require('ioredis');
-const db = new Redis();
-const manager = new Redis();
+const { dbconfig } = require('../config');
+const db = new Redis(dbconfig);
+const manager = new Redis(dbconfig);
 const nanoid = require('nanoid/generate');
 
 manager.subscribe('removed');
 
-manager.on('message', async function(channel, message) {
+manager.on('message', async function() {
     const count = await db.scard('genurls');
     if (count < 100) {
         generateUrls(5000);

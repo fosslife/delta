@@ -67,8 +67,8 @@ Most basic method, and it will work with just simple `curl` command or alternati
 -   Go to the directory from which you want to upload the file
 -   run `curl -H 'api-key: API_KEY' -F file=@filename https://url.com/`,
 -   Replace required data accordingly
-    -   API_KEY ⭢ The exact key you have given on server in `config.json`
-    -   filename ⭢ filename you want to upload
+    -   API_KEY - The exact key you have given on server in `config.json`
+    -   filename - filename you want to upload
 
 ##### for urls
 
@@ -107,13 +107,13 @@ this is current configuration:
 ```js
 {
     users: [
-        ['spark', '1234', 'https://i.sprk.pw/'],
-        ['Pavan', 'abcd', 'https://pwnj.pw/']
+        ['Spark', 'spark1234', 'https://i.spark.pepe/'],
+        ['John', '1234John', 'https://john.meme/']
     ];
 }
 ```
 
-And, If spark makes a request to the server with his own api key, the server will store the uploaded file inside a different dir called `spark` in `uploads/` folder, and will return `https://i.sprk.pw/7HgY` as shortened URL, but if Pavan makes a request to same server with his private api key, his files will be stored in `Pavan` directory under `uploads/` folder, and he will get `https://pwnj.pw/8Hy` in return :)
+And, If spark makes a request to the server with his own api key, the server will store the uploaded file inside a different dir called `spark` in `uploads/` folder, and will return `https://i.sprk.pw/7HgY` as shortened URL, but if John makes a request to same server with his private api key, his files will be stored in `John` directory under `uploads/` folder, and he will get `https://john.meme/8Hy` in return :)
 
 ## Licence
 

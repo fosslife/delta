@@ -117,11 +117,11 @@ this is current configuration:
 
 {
     users: [
-        ['spark', '1234', 'https://i.sprk.pw/'],
-        ['Pavan', 'abcd', 'https://pwnj.pw/']
+        ['Spark', 'spark1234', 'https://i.spark.pepe/'],
+        ['John', '1234John', 'https://john.meme/']
     ];
 }
-And, If spark makes a request to the server with his own api key, the server will store the uploaded file inside a different dir called `spark` in `uploads/` folder, and will return `https://i.sprk.pw/7HgY` as shortened URL, but if Pavan makes a request to same server with his private api key, his files will be stored in `Pavan` directory under `uploads/` folder, and he will get `https://pwnj.pw/8Hy` in return :)
+And, If spark makes a request to the server with his own api key, the server will store the uploaded file inside a different dir called `spark` in `uploads/` folder, and will return `https://i.sprk.pw/7HgY` as shortened URL, but if John makes a request to same server with his private api key, his files will be stored in `John` directory under `uploads/` folder, and he will get `https://john.meme/8Hy` in return :)
 
 ## Licence
 
