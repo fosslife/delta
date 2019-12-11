@@ -13,6 +13,10 @@ Fix readme for latest features
 p3:
 logging not working probably?
 live reload config
+cleanup req/res going through multiple function, pass only required objects. req/res are heavy
 
 p4:
 file encryption?
+
+p5:
+RiiR
