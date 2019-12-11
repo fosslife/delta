@@ -35,7 +35,7 @@ uploadFile() {
             curl -H "api-key: $apikey" -F file=@$2 $3
             ;;
         4 )
-            curl -H "api-key: $apikey" -F file=@$2 -F lockwith=$3 $4
+            curl -H "api-key: $apikey" -F file=@$2 -F pass=$3 $4
             ;;
         * )
             echo "Incorrect arguments, use --help"
