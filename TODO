@@ -1,7 +1,4 @@
 p1:
-give more options for databases (nedb? sqlite)
-
-p2:
 cache earlier X redirects?
 
 add readme `up.sh` method of usage
@@ -10,13 +7,13 @@ make asciinema for latest demo
 Fix readme for latest features
     readme doesn't have anything about passwords
 
-p3:
+p2:
 logging not working probably?
 live reload config
 cleanup req/res going through multiple function, pass only required objects. req/res are heavy
 
-p4:
+p3:
 file encryption?
 
-p5:
+p10:
 RiiR
