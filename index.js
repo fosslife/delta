@@ -5,8 +5,10 @@
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
+const { existsSync, mkdirSync } = require('fs');
+const path = require('path');
 const { promisify } = require('util');
-const { port } = require('./config');
+const { port, uploadpath, users } = require('./config');
 const logger = require('./core/logger');
 const { resolve } = require('path');
 const { NODE_ENV: env } = process.env;
@@ -52,6 +54,20 @@ app.listen(port, () =>
     // eslint-disable-next-line
     console.log(`Server started at port ${port}`)
 );
+
+// bootstrap folders/files etc.
+(() => {
+    if (!existsSync(uploadpath)) {
+        mkdirSync(uploadpath);
+    }
+    const usernames = users.reduce((acc, curr) => [...acc, curr[0]], []);
+    for (const u of usernames) {
+        const uniquePath = path.resolve(uploadpath, u);
+        if (!existsSync(uniquePath)) {
+            mkdirSync(uniquePath);
+        }
+    }
+})();
 
 process.on('unhandledRejection', e => {
     logger.error(e);
