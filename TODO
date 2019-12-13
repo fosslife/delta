@@ -1,19 +1,10 @@
-p1:
-cache earlier X redirects?
 
+p1:
 add readme `up.sh` method of usage
     edit hardoded apikey in up.sh
 make asciinema for latest demo
 Fix readme for latest features
     readme doesn't have anything about passwords
-
-p2:
-logging not working probably?
-live reload config
-cleanup req/res going through multiple function, pass only required objects. req/res are heavy
-
-p3:
-file encryption?
 
 p10:
 RiiR
