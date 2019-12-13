@@ -2,9 +2,9 @@
 
 const db = require('../db');
 const validURL = require('valid-url');
-const isAuthorizedUser = require('../isAuthorizedUser');
+const { isAuthorizedUser } = require('../utils');
 const logger = require('../logger');
-const auth = require('../auth');
+const { auth } = require('../utils');
 const { getExpiry } = require('../utils');
 
 const urlShortener = async (req, res) => {

@@ -3,7 +3,7 @@
 const multer = require('multer');
 const path = require('path');
 const db = require('../db');
-const auth = require('../auth');
+const { auth } = require('../utils');
 const { uploadpath } = require('../../config');
 
 const storage = multer.diskStorage({

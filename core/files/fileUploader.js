@@ -2,7 +2,7 @@
 
 const { promisify } = require('util');
 const upload = promisify(require('./diskstorage').upload);
-const isAuthorizedUser = require('../isAuthorizedUser');
+const { isAuthorizedUser } = require('../utils');
 const logger = require('../logger');
 const db = require('../db');
 const { getExpiry } = require('../utils');

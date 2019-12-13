@@ -1,4 +1,5 @@
 'use strict';
+const { users } = require('../config');
 
 function getExpiry(str) {
     const timeFactor = str.substring(str.length - 1);
@@ -14,6 +15,22 @@ function getExpiry(str) {
     return multipliers[timeFactor](time);
 }
 
+function auth(apikey) {
+    return users.find(e => e[1] === apikey);
+}
+
+function isAuthorizedUser(currentKey) {
+    if (!currentKey) {
+        return 403;
+    } else if (!auth(currentKey)) {
+        return 401;
+    } else {
+        return 200;
+    }
+}
+
 module.exports = {
-    getExpiry
+    getExpiry,
+    isAuthorizedUser,
+    auth
 };
