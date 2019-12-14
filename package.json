@@ -2,12 +2,14 @@
     "name": "delta",
     "version": "1.0.0",
     "description": "A superfast feature-rich self-hosted File Uploader and URL shortner",
-    "repository": {"url": "https://github.com/fosslife/delta"},
+    "repository": {
+        "url": "https://github.com/fosslife/delta"
+    },
     "main": "index.js",
     "license": "MIT",
     "scripts": {
         "start:dev": "cross-env NODE_ENV=development nodemon index.js --ignore 'storage'",
-        "start": "cross-env NODE_ENV=production node index.js"
+        "start": "cross-env NODE_ENV=production REDIS_HOST=localhost node index.js"
     },
     "husky": {
         "hooks": {
