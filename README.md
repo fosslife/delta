@@ -1,8 +1,6 @@
 # Delta - file uploader + url shortner
 
-`delta` is a small hobby project that I did in my free time. It's a self-hosted file uploader + URL shortner. In short, you can fire a simple `curl` or any other equivalent command with a file name, and that file will be uploaded to your server, after that you'll have a short url as a reponse of upload. And you can use this URL to fetch the uploaded file.
-
-Ex: if you upload your `user_environment.conf` to server, you'll have something like `sma.ll/y7A` in return (where `sma.ll` is your server). After than anyone with the URL (optionally password), can access this file with a simple `GET` request, even from browser.
+`delta` is a small hobby project that I did in my free time. It's a self-hosted file uploader + URL shortner. In short, you can fire a simple `curl` command with a file name, and that file will be uploaded to your server, after that you'll have a short url as a reponse of upload. And you can use this URL to fetch the uploaded file. Same goes with URL shortner
 
 ## Demo
 
@@ -10,27 +8,25 @@ Ex: if you upload your `user_environment.conf` to server, you'll have something 
 
 ## Features
 
--   :zap: File uploader backed with Superfast Expressjs
+-   :zap: File uploader backed with Superfast Expressjs and Multer
 -   :file_folder: URL shortener for files (upload file ⇒ get shortened URL in return)
 -   :globe_with_meridians: URL shortener for long URLS (`http://example.com/games/minecraft/world` ⇒ `http://sma.ll/6Tj`)
 -   :fire: Custom URL support (`http://example.com/longurl/school/college/work` ⇒ `http://sma.ll/life`)
 -   :tada: Secured with API keys
 -   :family: Multiuser + Multidomain support on the same server (see [this](#multiuser))
--   :collision: Configurable Cron job for deleting resources older than X time
--   :1234: "Never Clashing" Permanent ID's for generated URLs. they are not random, but infact incremental so no worries of
-    clashing two URLs and also URLs are non back traceable, i.e. URL generator shuffles them randomly everytime server starts.
+-   :hourglass: Configurable Cron job for deleting resources older than X time
+-   :1234: <b>Never Clashing (0% collision guaranteed)</b> Permanent ID's for generated URLs.
 -   :bomb: self destructing links
--   Coming
-    -   file encryption
+-   :closed_lock_with_key: Password protected links
+-   :ghost: Easy to install, setup and use :P
 
 ## Installation
 
-The module is a simple express server with some configuration. To set it up follow the steps:
+```
+git clone https://github.com/fosslife/delta.git
+```
 
-#### Checkout project
-
--   `git clone https://github.com/fosslife/delta.git` OR
--   Download zip from [master](https://github.com/fosslife/delta/archive/master.zip) branch
+OR, download zip from [master](https://github.com/fosslife/delta/archive/master.zip) branch
 
 #### Configuration
 
