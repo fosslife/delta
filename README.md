@@ -110,16 +110,32 @@ Most basic method, and it will work with just simple `curl` command or alternati
 
 See [Examples](#examples) for more details.
 
-## Examples
+## Examples and API
 
 Considering apiKey = 1234:
 
 -   To upload a file called dogs.jpg
-    ⇒ `curl -H 'api-key: 1234' -F file=@dogs.jpg http://url.com/`
+```
+curl -H 'api-key: 1234' -F file=@dogs.jpg http://url.com/
+```
 -   To shorten a URL, say this repository
-    ⇒ `curl -H 'api-key: 1234' -d 'url=https://github.com/fosslife/delta.git' http://url.com/`
+```
+curl -H 'api-key: 1234' -d 'url=https://github.com/fosslife/delta.git' http://url.com/
+```
 -   To shorten custom URL, again this repository, to `delta`
-    ⇒ `curl -H 'api-key: 1234' -d 'url=https://github.com/fosslife/dekta.git' -d 'custom=dlta' http://url.com/`
+```
+curl -H 'api-key: 1234' -d 'url=https://github.com/fosslife/dekta.git' -d 'custom=delta' http://url.com/
+```
+-   To Shorten a URL and set automatic expiry of 15 minutes
+```
+curl -H 'api-key: 1234' -d 'url=https://example.com/' -d 'expires=15m'
+```
+-   To upload a file and lock it with password, so that only people with that password can see that file
+```
+curl -H 'api-key: 1234' -F file=@cats.png -F 'pass=eNcRyPt' http://url.com/
+```
+
+of course, file uploads don't have custom URLs, both files and URLs can have password and expiry duration. keep in mind expiry duration can only be in format `{number}{s|m|h|d|M}` (stands for Seconds, Minutes, Hours, Days, Months respectively) like `15s` for 15 seconds, `1d` for 1 day, `2M` for two months etc.
 
 ## Multiuser
 
