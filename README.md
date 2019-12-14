@@ -56,12 +56,31 @@ Open config.js. it has multiple things you need to configure
 
 #### Install dependencies
 
--   Run `npm install` or `yarn install` or your favourite other tool :P
--   make sure you have redis installed on your OS.
+##### Redis
+###### Debian/Ubuntu etc
+```
+sudo apt-get install redis-server
+sudo systemctl enable --now redis-server.service
+```
+###### fedora etc
+```
+sudo dnf -y install redis
+sudo systemctl enable --now redis
+```
+| for other OS: `https://www.google.com/search?q=install+redis+on+my+os`
+
+##### Node
+```
+npm install # or yarn install
+```
+
+
 
 #### Enjoy
 
 -   run `npm start` or `yarn start`! Server is started, enjoy!
+
+If ther's something not working, please submit an issue, I will make sure I fix it in upcoming weekend :D
 
 ## Usage
 
