@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const db = require('../db');
 const { auth } = require('../utils');
-const { uploadpath } = require('../../config');
+const { uploadpath, maxFileSize, allowedExtentions } = require('../../config');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -22,5 +22,15 @@ const storage = multer.diskStorage({
 });
 
 exports.upload = multer({
-    storage
+    storage,
+    fileFilter: function(req, file, callback) {
+        const ext = path.extname(file.originalname);
+        if (!allowedExtentions.includes(ext)) {
+            callback(new TypeError('Uploaded file type is not allowed\n'));
+        }
+        callback(null, true);
+    },
+    limits: {
+        fileSize: maxFileSize * 1000000
+    }
 }).single('file');
