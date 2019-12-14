@@ -49,6 +49,7 @@ const urlShortener = async (req, res) => {
             if (req.body.expires) {
                 const duration = getExpiry(req.body.expires);
                 await db.expire(`short:${customOrAuto}`, duration);
+                await db.hset(`short:${customOrAuto}`, 'expires', duration);
             }
             res.end(`${fullURL}\n`);
         } else {

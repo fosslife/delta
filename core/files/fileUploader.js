@@ -33,6 +33,7 @@ const fileUploader = (req, res) => {
                 if (req.body.expires) {
                     const duration = getExpiry(req.body.expires);
                     await db.expire(`short:${shortened}`, duration);
+                    await db.hset(`short:${shortened}`, 'expires', duration);
                 }
                 const url = `${req.file.domain}${req.file.url}\n`;
                 res.end(url);
