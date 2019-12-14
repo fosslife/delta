@@ -25,8 +25,10 @@ exports.upload = multer({
     storage,
     fileFilter: function(req, file, callback) {
         const ext = path.extname(file.originalname);
-        if (!allowedExtentions.includes(ext)) {
-            callback(new TypeError('Uploaded file type is not allowed\n'));
+        if (allowedExtentions !== '*') {
+            if (!allowedExtentions.includes(ext)) {
+                callback(new TypeError('Uploaded file type is not allowed\n'));
+            }
         }
         callback(null, true);
     },

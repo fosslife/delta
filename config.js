@@ -4,7 +4,7 @@ module.exports = {
     timeZone: 'Asia/Kolkata', // Timezone for cron job
     users: [
         //    username   api-key        server url
-        ['Spark', 'spark1234', 'https://i.spark.pepe/'],
+        ['Spark', 'spark1234', 'http://localhost:3000/'],
         ['John', '1234John', 'https://john.meme/']
     ], // All users that are going to use delta
     uploadpath: `${__dirname}/uploads`, // give full path
@@ -24,5 +24,5 @@ module.exports = {
     urlString:
         '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-', // URL will have these characters
     maxFileSize: 2, // max File size in MB
-    allowedExtentions: ['.png']
+    allowedExtentions: '*' // Either * or array of extentions like [".png", ".txt"], keep the dot
 };
