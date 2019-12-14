@@ -22,25 +22,37 @@
 
 ## Installation
 
+#### Clone
 ```
 git clone https://github.com/fosslife/delta.git
 ```
 
-OR, download zip from [master](https://github.com/fosslife/delta/archive/master.zip) branch
+Or, download zip from [master](https://github.com/fosslife/delta/archive/master.zip) branch
 
 #### Configuration
 
 Open config.js. it has multiple things you need to configure
 
--   `users`: list of users with their own api-keys, name etc. Each user is another list of 1.User name 2. apiKey and 3. his own domain URL. eg: users: `[ ['John', 'abcd1234!@#', 'http://abcd.com/'], ..another user ]`
-    -   `name`: delta will categorize this users files in a seperate folder with this name. i.e. `John`'s files will be stored in folder called "john" and `Jack`'s will be in folder called "jack" etc.
+-   `users`: list of users with their own api-keys, name etc.
+    -   `name`: Name of the user, a folder will be created with this name inside upload directory.
     -   `apiKey` : a random long string
-        To generate a random string, you can run
-        `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-        or
-        `date | md5sum | base64 | head -c 32`
+      - run `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1` OR `date | md5sum | base64 | head -c 32` to create one
     -   `domainUrl: 'https://your.domain.url/'` Keep the trailing slash `/`
 -   `timeZone`: 'Your/Timezone' This is used to run the cron job periodically according to your location
+-   `uploadpath`: Absolute path where you want your files to be stored on server
+- `cron`:
+  - `schedule`: Cron schedule string, default is 1st Day of every month at 00:00
+  - `min_age`: Minimum time (days) for which file should be retained
+  - `max_age`: Maximum time (days) for which file should be retained
+  - `max_size`: Maximum file size to calculate retaintion period against (it's not max size of file to upload)
+- `dbconfig`: Redis configuration
+  - `port`: Redis server port
+  - `host`: Set via REDIS_HOST env variable for Docker, give your server URL if you are not using docker
+  - `password`: Server password
+- `port`: Port at which you want to run delta at
+- `urlLength`: length of the generated URL, 4 to 7 are considered good.
+- `urlString`: list of characters from which shortened URL is generated, you can remove I,l,4,A etc look-alike characters if you want
+
 
 #### Install dependencies
 
