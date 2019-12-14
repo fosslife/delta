@@ -23,6 +23,7 @@
 ## Installation
 
 #### Clone
+
 ```
 git clone https://github.com/fosslife/delta.git
 ```
@@ -35,48 +36,55 @@ Open config.js. it has multiple things you need to configure
 
 -   `users`: list of users with their own api-keys, name etc.
     -   `name`: Name of the user, a folder will be created with this name inside upload directory.
-    -   `apiKey` : a random long string
-      - run `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1` OR `date | md5sum | base64 | head -c 32` to create one
+    -   `apiKey` : a random long string (mandatory as user identification is done with this key, can't leave empty)
+    -   run `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1` OR `date | md5sum | base64 | head -c 32` to create one
     -   `domainUrl: 'https://your.domain.url/'` Keep the trailing slash `/`
 -   `timeZone`: 'Your/Timezone' This is used to run the cron job periodically according to your location
 -   `uploadpath`: Absolute path where you want your files to be stored on server
-- `cron`:
-  - `schedule`: Cron schedule string, default is 1st Day of every month at 00:00
-  - `min_age`: Minimum time (days) for which file should be retained
-  - `max_age`: Maximum time (days) for which file should be retained
-  - `max_size`: Maximum file size to calculate retaintion period against (it's not max size of file to upload)
-- `dbconfig`: Redis configuration
-  - `port`: Redis server port
-  - `host`: Set via REDIS_HOST env variable for Docker, give your server URL if you are not using docker
-  - `password`: Server password
-- `port`: Port at which you want to run delta at
-- `urlLength`: length of the generated URL, 4 to 7 are considered good.
-- `urlString`: list of characters from which shortened URL is generated, you can remove I,l,4,A etc look-alike characters if you want
-
+-   `cron`:
+    -   `schedule`: Cron schedule string, default is 1st Day of every month at 00:00
+    -   `min_age`: Minimum time (days) for which file should be retained
+    -   `max_age`: Maximum time (days) for which file should be retained
+    -   `max_size`: Maximum file size to calculate retaintion period against (it's not max size of file to upload)
+-   `dbconfig`: Redis configuration
+    -   `port`: Redis server port
+    -   `host`: Set via REDIS_HOST env variable for Docker, give your server URL if you are not using docker
+    -   `password`: Server password
+-   `port`: Port at which you want to run delta at
+-   `urlLength`: length of the generated URL, 4 to 7 are considered good.
+-   `urlString`: list of characters from which shortened URL is generated, you can remove I,l,4,A etc look-alike characters if you want
 
 #### Install dependencies
 
 There are two ways to use delta
-- [docker](#docker) method and
-- [non-docker](#redis)(direct) method
+
+-   [docker](#docker) method and
+-   [non-docker](#redis)(direct) method
 
 ##### Docker
+
 | although I have created basic Dockerfile and docker-compose.yml, and it works, I don't know much docker I need help with persistance storage/volume etc. If you know Docker, that'd be a great help :)
 
 ##### Redis
+
 ###### Debian/Ubuntu etc
+
 ```
 sudo apt-get install redis-server
 sudo systemctl enable --now redis-server.service
 ```
+
 ###### fedora etc
+
 ```
 sudo dnf -y install redis
 sudo systemctl enable --now redis
 ```
+
 | for other OS: `https://www.google.com/search?q=install+redis+on+my+os`
 
 ##### Node
+
 ```
 npm install # or yarn install
 ```
@@ -115,27 +123,36 @@ See [Examples](#examples) for more details.
 Considering apiKey = 1234:
 
 -   To upload a file called dogs.jpg
+
 ```
 curl -H 'api-key: 1234' -F file=@dogs.jpg http://url.com/
 ```
+
 -   To shorten a URL, say this repository
+
 ```
 curl -H 'api-key: 1234' -d 'url=https://github.com/fosslife/delta.git' http://url.com/
 ```
+
 -   To shorten custom URL, again this repository, to `delta`
+
 ```
 curl -H 'api-key: 1234' -d 'url=https://github.com/fosslife/dekta.git' -d 'custom=delta' http://url.com/
 ```
+
 -   To Shorten a URL and set automatic expiry of 15 minutes
+
 ```
 curl -H 'api-key: 1234' -d 'url=https://example.com/' -d 'expires=15m'
 ```
+
 -   To upload a file and lock it with password, so that only people with that password can see that file
+
 ```
 curl -H 'api-key: 1234' -F file=@cats.png -F 'pass=eNcRyPt' http://url.com/
 ```
 
-of course, file uploads don't have custom URLs, both files and URLs can have password and expiry duration. keep in mind expiry duration can only be in format `{number}{s|m|h|d|M}` (stands for Seconds, Minutes, Hours, Days, Months respectively) like `15s` for 15 seconds, `1d` for 1 day, `2M` for two months etc.
+of course, file uploads don't have custom URLs, both files and URLs can have password and expiry duration. keep in mind expiry duration can only be in format `{number}{s|m|h|d|w|M}` (stands for Seconds, Minutes, Hours, Days, Weeks, Months respectively) like `15s` for 15 seconds, `1d` for 1 day, `2M` for two months etc.
 
 ## Multiuser
 

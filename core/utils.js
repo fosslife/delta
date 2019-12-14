@@ -10,6 +10,7 @@ function getExpiry(str) {
         m: t => t * 60,
         h: t => t * 3600,
         d: t => t * 86400,
+        w: t => t * 1.6534e-6,
         M: t => t * 2.628e6
     };
     return multipliers[timeFactor](time);
