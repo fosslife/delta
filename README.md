@@ -56,6 +56,13 @@ Open config.js. it has multiple things you need to configure
 
 #### Install dependencies
 
+There are two ways to use delta
+- [docker](#docker) method and
+- [non-docker](#redis)(direct) method
+
+##### Docker
+| although I have created basic Dockerfile and docker-compose.yml, and it works, I don't know much docker I need help with persistance storage/volume etc. If you know Docker, that'd be a great help :)
+
 ##### Redis
 ###### Debian/Ubuntu etc
 ```
@@ -73,8 +80,6 @@ sudo systemctl enable --now redis
 ```
 npm install # or yarn install
 ```
-
-
 
 #### Enjoy
 
