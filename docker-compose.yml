@@ -8,6 +8,8 @@ services:
             NODE_ENV: production
         ports:
             - 3000:3000
+        volumes:
+            - ./uploads:/usr/src/app/uploads
     redis:
         image: redis
         command: ['redis-server', '--bind', 'redis', '--port', '6379']
