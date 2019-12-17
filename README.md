@@ -4,7 +4,7 @@
 
 ## Demo
 
-[![asciicast](https://asciinema.org/a/0e4sjjrPoEMq9uu8FIYSdNwsD.svg)](https://asciinema.org/a/0e4sjjrPoEMq9uu8FIYSdNwsD)
+![](http://i.imgur.com/teruEMX.mp4)
 
 ## Features
 
