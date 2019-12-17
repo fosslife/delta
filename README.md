@@ -4,7 +4,7 @@
 
 ## Demo
 
-![](http://i.imgur.com/teruEMX.mp4)
+[![Demo](https://img.youtube.com/vi/8fMEgDq_6VQ/0.jpg)](https://youtu.be/8fMEgDq_6VQ)
 
 ## Features
 
