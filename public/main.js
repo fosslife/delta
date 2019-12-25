@@ -1,9 +1,10 @@
 'use strict';
 
-const URLButton = document.querySelector('#urlButton');
-const fileButton = document.querySelector('#fileButton');
-const urlInput = document.querySelector('#url');
-const fileInput = document.querySelector('#file');
+const URLButton = document.getElementById('urlButton');
+const fileButton = document.getElementById('fileButton');
+const urlInput = document.getElementById('url');
+const fileInput = document.getElementById('file');
+const resultDiv = document.getElementById('result');
 
 URLButton.addEventListener('click', async () => {
     const url = urlInput.value;
@@ -11,18 +12,21 @@ URLButton.addEventListener('click', async () => {
         alert('No URL specified');
         return;
     }
+    const headers = new Headers({
+        'api-key': 'spark1234',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Accept: 'application/json'
+    });
     const res = await fetch('/', {
         method: 'POST',
-        headers: {
-            'api-key': 'spark1234',
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Accept: 'application/json'
-        },
+        headers: headers,
         body: `url=${url}`
     })
         .then(d => d.json())
         .catch(console.error);
-    console.log(res);
+    // const result = document.createElement('div');
+    resultDiv.innerHTML = res.message;
+    console.log('RES', res);
 });
 
 fileButton.addEventListener('click', () => {
