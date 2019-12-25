@@ -22,23 +22,26 @@
                 <div
                     class="mx-auto p-3 w-1/2 justify-start bg-white rounded overflow-hidden shadow-md border-gray-600"
                 >
-                    <form class="px-8 mb-4">
+                    <form class="px-8 mb-4" id="urlForm" name="urlForm">
                         <div class="mb-4">
                             <label
                                 class="block text-gray-700 text-sm font-bold mb-2"
-                                htmlFor="username"
+                                for="url"
                             >
                                 Shorten a URL
                             </label>
                             <input
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="username"
+                                id="url"
+                                name="url"
                                 type="text"
                                 placeholder="Enter URL..."
                             />
                         </div>
+                        <div id="result"></div>
                         <div class="flex items-center justify-between">
                             <button
+                                id="urlButton"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 type="button"
                             >
@@ -59,19 +62,20 @@
                         <div class="mb-4">
                             <label
                                 class="block text-gray-700 text-sm font-bold mb-2"
-                                htmlFor="username"
+                                for="file"
                             >
                                 Upload a file
                             </label>
                             <input
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="username"
+                                id="file"
                                 type="file"
                                 placeholder="Upload a file"
                             />
                         </div>
                         <div class="flex items-center justify-between">
                             <button
+                                id="fileButton"
                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 type="button"
                             >
@@ -82,5 +86,6 @@
                 </div>
             </div>
         </div>
+        <script src="main.js"></script>
     </body>
 </html>

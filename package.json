@@ -8,7 +8,7 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "dev": "yarn gulp cssdev && cross-env NODE_ENV=development nodemon index.js --ignore 'storage'",
+        "dev": "yarn gulp cssdev && cross-env NODE_ENV=development nodemon index.js --ignore 'storage' --ignore 'public'",
         "start": "yarn gulp cssprod && cross-env NODE_ENV=production REDIS_HOST=localhost node index.js"
     },
     "husky": {
