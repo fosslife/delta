@@ -2,10 +2,9 @@
 
 const { promisify } = require('util');
 const upload = promisify(require('./diskstorage').upload);
-const { isAuthorizedUser } = require('../utils');
+const { isAuthorizedUser, getExpiry } = require('../utils');
 const logger = require('../logger');
 const db = require('../db');
-const { getExpiry } = require('../utils');
 
 const fileUploader = (req, res) => {
     const API_KEY_HEADER = req.get('api-key');
