@@ -2,10 +2,8 @@
 
 const db = require('../db');
 const validURL = require('valid-url');
-const { isAuthorizedUser } = require('../utils');
 const logger = require('../logger');
-const { auth } = require('../utils');
-const { getExpiry } = require('../utils');
+const { auth, getExpiry, isAuthorizedUser } = require('../utils');
 
 const urlShortener = async (req, res) => {
     const URL = req.body.url;
@@ -14,13 +12,14 @@ const urlShortener = async (req, res) => {
     const [, , domain] = auth(API_KEY_HEADER);
     const responseStatus = isAuthorizedUser(API_KEY_HEADER);
     if (responseStatus === 200) {
+        const contentType = req.get('Accept') || 'text/plain';
         logger.info(`User is authorised`);
         const specialURL = req.body.custom;
         const customUrlExists = await db.hgetall(`short:${specialURL}`);
         if (Object.keys(customUrlExists).length) {
-            return res.end(
-                `URL with name ${specialURL} already exists. try different URL`
-            );
+            return res.status(409).json({
+                message: `URL with name ${specialURL} already exists. try different URL`
+            });
         }
         const isURL = validURL.isWebUri(URL);
         if (isURL) {
@@ -51,10 +50,20 @@ const urlShortener = async (req, res) => {
                 await db.expire(`short:${customOrAuto}`, duration);
                 await db.hset(`short:${customOrAuto}`, 'expires', duration);
             }
-            res.end(`${fullURL}\n`);
+            if (contentType === 'application/json') {
+                res.json({
+                    message: fullURL,
+                    status: 200
+                });
+            } else {
+                res.end(`${fullURL}\n`);
+            }
         } else {
             logger.error('User gave invalid URL');
-            res.end('Please enter a valid resource URL\n');
+            res.status(400).json({
+                status: 400,
+                message: 'Bad Request, URL in invalid'
+            });
         }
     } else {
         logger.error('Unauthorized user visit ' + JSON.stringify(req.ip));
