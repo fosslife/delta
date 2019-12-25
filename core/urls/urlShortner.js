@@ -67,7 +67,7 @@ const urlShortener = async (req, res) => {
         }
     } else {
         logger.error('Unauthorized user visit ' + JSON.stringify(req.ip));
-        res.status(responseStatus).end('\n');
+        res.status(responseStatus).end('incorrect or missing API key');
     }
 };
 
