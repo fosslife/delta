@@ -21,7 +21,7 @@
             </header>
             <div class="flex inline-block my-6">
                 <div
-                    style="min-height: 200px;"
+                    style="min-height: 200px; min-width: 650px;"
                     class="mx-auto p-3 w-1/2 justify-start bg-white rounded-lg overflow-hidden shadow-md border-gray-600"
                 >
                     <form class="px-8 mb-4" id="urlForm" name="urlForm">
@@ -41,6 +41,46 @@
                             />
                         </div>
 
+                        <!-- Custom URL -->
+                        <div class="flex">
+                            <div
+                                class="mb-6 mr-4 flex-none hidden w-1/2"
+                                id="customurlbox"
+                            >
+                                <label
+                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    for="url"
+                                >
+                                    Enter Custom URL
+                                </label>
+                                <input
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="customurl"
+                                    name="password"
+                                    type="text"
+                                    placeholder="Enter URL..."
+                                />
+                            </div>
+                            <div
+                                class="mb-6 flex-none hidden w-1/2"
+                                id="passwordbox"
+                            >
+                                <label
+                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    for="url"
+                                >
+                                    Enter Password
+                                </label>
+                                <input
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="password"
+                                    name="password"
+                                    type="text"
+                                    placeholder="Enter URL..."
+                                />
+                            </div>
+                        </div>
+
                         <div class="flex items-center justify-between">
                             <button
                                 id="urlButton"
@@ -49,6 +89,33 @@
                             >
                                 Shorten
                             </button>
+                            <!-- Custom URL Checkbox -->
+                            <label
+                                class="w-2/3 block text-gray-500 font-bold ml-8"
+                            >
+                                <input
+                                    class="mr-2 leading-tight"
+                                    type="checkbox"
+                                    id="customurlcheckbox"
+                                    onchange="enableFields()"
+                                />
+                                <span class="text-sm">
+                                    Custom URL
+                                </span>
+                            </label>
+
+                            <!-- Password Checkbox -->
+                            <label class="w-2/3 block text-gray-500 font-bold">
+                                <input
+                                    class="mr-2 leading-tight"
+                                    type="checkbox"
+                                    id="passwordcheckbox"
+                                    onchange="enableFields()"
+                                />
+                                <span class="text-sm">
+                                    Password
+                                </span>
+                            </label>
                         </div>
                         <div class="flex">
                             <div
@@ -68,7 +135,7 @@
             <!-- ------------------------------------------ File Uplaod ---------------------------------------- -->
             <div class="flex inline-block my-6">
                 <div
-                    style="min-height: 200px;"
+                    style="min-height: 200px; min-width: 650px;"
                     class="mx-auto p-3 w-1/2 justify-start bg-white rounded-lg overflow-hidden shadow-md border-gray-600"
                 >
                     <form class="px-8 mb-4">
