@@ -48,6 +48,7 @@ const fileUploader = (req, res) => {
             .catch(err => {
                 logger.error('Error while uploading the file ' + err);
                 res.status(500).json({
+                    status: 500,
                     message: 'Something went wrong while uploading the file'
                 });
             });
