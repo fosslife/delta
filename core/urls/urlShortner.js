@@ -19,6 +19,7 @@ const urlShortener = async (req, res) => {
             const customUrlExists = await db.hgetall(`short:${specialURL}`);
             if (Object.keys(customUrlExists).length) {
                 return res.status(409).json({
+                    status: 409,
                     message: `URL with name ${specialURL} already exists. try different URL`
                 });
             }
