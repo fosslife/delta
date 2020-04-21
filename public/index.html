@@ -6,6 +6,7 @@
         <title>Delta</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/spinner.css" />
     </head>
     <body>
         <div class="bg-gray-200 h-screen text-gray-800 antialiased">
@@ -20,10 +21,11 @@
             </header>
             <div class="flex inline-block my-6">
                 <div
-                    class="mx-auto p-3 w-1/2 justify-start bg-white rounded overflow-hidden shadow-md border-gray-600"
+                    style="min-height: 200px;"
+                    class="mx-auto p-3 w-1/2 justify-start bg-white rounded-lg overflow-hidden shadow-md border-gray-600"
                 >
                     <form class="px-8 mb-4" id="urlForm" name="urlForm">
-                        <div class="mb-4">
+                        <div class="mb-6">
                             <label
                                 class="block text-gray-700 text-sm font-bold mb-2"
                                 for="url"
@@ -38,7 +40,7 @@
                                 placeholder="Enter URL..."
                             />
                         </div>
-                        <div id="result"></div>
+
                         <div class="flex items-center justify-between">
                             <button
                                 id="urlButton"
@@ -48,18 +50,29 @@
                                 Shorten
                             </button>
                         </div>
+                        <div class="flex">
+                            <div
+                                id="result"
+                                class="mt-2 text-base text-teal-600 font-medium"
+                            ></div>
+                            <div id="loader" class="invisible">
+                                <div class="loader">Loading...</div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
             <div class="flex justify-center">
                 <div class="border-b-4 w-3/4 text-center">OR</div>
             </div>
+            <!-- ------------------------------------------ File Uplaod ---------------------------------------- -->
             <div class="flex inline-block my-6">
                 <div
-                    class="mx-auto p-3 w-1/2 justify-start bg-white rounded overflow-hidden shadow-md border-gray-600"
+                    style="min-height: 200px;"
+                    class="mx-auto p-3 w-1/2 justify-start bg-white rounded-lg overflow-hidden shadow-md border-gray-600"
                 >
                     <form class="px-8 mb-4">
-                        <div class="mb-4">
+                        <div class="mb-6">
                             <label
                                 class="block text-gray-700 text-sm font-bold mb-2"
                                 for="file"

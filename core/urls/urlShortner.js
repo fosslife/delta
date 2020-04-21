@@ -15,11 +15,13 @@ const urlShortener = async (req, res) => {
         const contentType = req.get('Accept') || 'text/plain';
         logger.info(`User is authorised`);
         const specialURL = req.body.custom;
-        const customUrlExists = await db.hgetall(`short:${specialURL}`);
-        if (Object.keys(customUrlExists).length) {
-            return res.status(409).json({
-                message: `URL with name ${specialURL} already exists. try different URL`
-            });
+        if (specialURL) {
+            const customUrlExists = await db.hgetall(`short:${specialURL}`);
+            if (Object.keys(customUrlExists).length) {
+                return res.status(409).json({
+                    message: `URL with name ${specialURL} already exists. try different URL`
+                });
+            }
         }
         const isURL = validURL.isWebUri(URL);
         if (isURL) {
@@ -59,7 +61,7 @@ const urlShortener = async (req, res) => {
                 res.end(`${fullURL}\n`);
             }
         } else {
-            logger.error('User gave invalid URL');
+            logger.error('User has given invalid URL');
             res.status(400).json({
                 status: 400,
                 message: 'Bad Request, URL in invalid'
