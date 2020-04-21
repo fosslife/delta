@@ -39,7 +39,7 @@ uploads.get('/:link', async (req, res) => {
         serve(cache[`short:${request}`], res);
     } else {
         const record = await db.hgetall(`short:${request}`);
-        if (!record.expires) {
+        if (!record.expires && !record.password) {
             // eslint thinks that it's a race condition. Smart.
             // but it's not. I update cache only when cache-miss happens.
             // eslint-disable-next-line
