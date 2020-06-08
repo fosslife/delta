@@ -18,7 +18,6 @@ const uploads = require('./routes/router');
  * Middlewares and inits
  */
 // Initialize index by 1000
-app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(helmet());

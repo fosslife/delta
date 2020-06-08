@@ -181,10 +181,6 @@ this is current configuration:
 
 And, If spark makes a request to the server with his own api key, the server will store the uploaded file inside a different dir called `spark` in `uploads/` folder, and will return `https://i.sprk.pw/7HgY` as shortened URL, but if John makes a request to same server with his private api key, his files will be stored in `John` directory under `uploads/` folder, and he will get `https://john.meme/8Hy` in return :)
 
-# Known Issue
-
--   Because of the browser caching, browser will cache the credentials when you visit a URL with `password` enabled, and if you immedietly visit a second shortURL with <u>same password</u> browser will not ask for credential this time. This issue occurs only if two URLs have same password and if they are opened immedietly in same browser instance. So use of different password for different link is suggested, or wait a while before setting the same password again (i.e. untill browser cache is cleared). Know fix? Please Open a PR
-
 ## Licence
 
 delta is Licensed under [MIT](https://github.com/fosslife/sprk/blob/master/LICENSE)
