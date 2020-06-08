@@ -5,6 +5,7 @@ const fileButton = document.getElementById('fileButton');
 const urlInput = document.getElementById('url');
 const fileInput = document.getElementById('file');
 const resultDiv = document.getElementById('result');
+const fileResultDiv = document.getElementById('fileresult');
 const loader = document.getElementById('loader');
 const customurl = document.getElementById('customurl');
 const password = document.getElementById('password');
@@ -43,17 +44,38 @@ URLButton.addEventListener('click', async () => {
     loader.classList.add('invisible');
     // const result = document.createElement('div');
     if (res.status === 200) {
+        await navigator.clipboard.writeText(res.message);
         resultDiv.innerHTML = `<a href="${res.message}" class="border-b border-teal-500 border-dashed">${res.message}</a><br/><span class="text-gray-800">URL Copied to clipboard</span>`;
     } else {
         resultDiv.innerHTML = `<span>${res.message}</span>`;
     }
     console.log('RES', res);
-    await navigator.clipboard.writeText(res.message);
 });
 
-fileButton.addEventListener('click', () => {
-    const file = fileInput.value;
-    console.log(file);
+fileButton.addEventListener('click', async () => {
+    const data = new FormData();
+    data.append('file', fileInput.files[0]);
+    const res = await fetch('/', {
+        method: 'POST',
+        headers: new Headers({
+            'api-key': 'spark1234',
+            Accept: 'application/json'
+        }),
+        body: data
+    })
+        .then(d => d.json())
+        .catch(e => {
+            console.error('Error occurred', e);
+            loader.classList.add('invisible');
+        });
+    // const result = document.createElement('div');
+    if (res.status === 200) {
+        await navigator.clipboard.writeText(res.message);
+        fileResultDiv.innerHTML = `<a href="${res.message}" class="border-b border-teal-500 border-dashed">${res.message}</a><br/><span class="text-gray-800">URL Copied to clipboard</span>`;
+    } else {
+        fileResultDiv.innerHTML = `<span>${res.message}</span>`;
+    }
+    console.log(res);
 });
 
 function enableFields() {
