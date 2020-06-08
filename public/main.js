@@ -43,11 +43,12 @@ URLButton.addEventListener('click', async () => {
     loader.classList.add('invisible');
     // const result = document.createElement('div');
     if (res.status === 200) {
-        resultDiv.innerHTML = `<a href="${res.message}" class="border-b border-teal-500 border-dashed">${res.message}</a>`;
+        resultDiv.innerHTML = `<a href="${res.message}" class="border-b border-teal-500 border-dashed">${res.message}</a><br/><span class="text-gray-800">URL Copied to clipboard</span>`;
     } else {
         resultDiv.innerHTML = `<span>${res.message}</span>`;
     }
     console.log('RES', res);
+    await navigator.clipboard.writeText(res.message);
 });
 
 fileButton.addEventListener('click', () => {
