@@ -31,12 +31,14 @@
         "winston": "^3.2.1"
     },
     "devDependencies": {
+        "axios": "^0.19.2",
         "eslint": "^6.5.1",
         "eslint-config-prettier": "^6.3.0",
         "eslint-plugin-prettier": "^3.1.1",
         "husky": "^3.0.8",
         "lorem-ipsum": "^1.0.6",
         "nodemon": "^1.18.10",
+        "ora": "^4.0.4",
         "prettier": "^1.18.2",
         "pretty-quick": "^1.11.1"
     }
