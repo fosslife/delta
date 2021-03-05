@@ -13,7 +13,7 @@ const logger = require('./core/logger');
 // const { resolve } = require('path');
 const { NODE_ENV: env } = process.env;
 const uploads = require('./routes/router');
-const exphbs = require('express-handlebars');
+// const exphbs = require('express-handlebars');
 
 /**
  * Middlewares and inits
@@ -24,8 +24,8 @@ app.use(express.json());
 // app.use(helmet());
 
 // view
-app.engine('handlebars', exphbs());
-app.set('view engine', 'handlebars');
+// app.engine('handlebars', exphbs());
+// app.set('view engine', 'handlebars');
 // app.enable('view cache');
 
 express.response.sendFile = promisify(express.response.sendFile);
@@ -45,7 +45,7 @@ if (env === 'production') {
  * same for express, so if /favicon fails, it will try to
  * search for /favicon in URLs instead :(
  */
-app.use(express.static('assets'));
+// app.use(express.static('assets'));
 // app.get('/favicon.ico', (req, res) =>
 //     res.sendFile(resolve(__dirname, './favicon.png'))
 // );

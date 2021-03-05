@@ -4,7 +4,7 @@ module.exports = {
     timeZone: 'Asia/Kolkata', // Timezone for cron job
     users: [
         //    username   api-key        server url
-        ['Spark', 'spark1234', 'http://localhost:3000/'],
+        ['Spark', 'spark1234', 'http://localhost:3001/'],
         ['John', '1234John', 'https://john.meme/']
     ], // All users that are going to use delta
     uploadpath: `${__dirname}/uploads`, // give full path
@@ -19,7 +19,7 @@ module.exports = {
         host: process.env.REDIS_HOST, // Redis host
         password: '' // Redis password, keep blank for default
     },
-    port: 3000,
+    port: 3001,
     urlLength: 5, // generate URLs of this length, try to keep above 3 to avoid clashing. 5 works best for me
     urlString:
         '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz-', // URL will have these characters
