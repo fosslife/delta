@@ -3,11 +3,12 @@ const Redis = require('ioredis');
 const { dbconfig, urlLength, urlString } = require('../config');
 const db = new Redis(dbconfig);
 const manager = new Redis(dbconfig);
-const nanoid = require('nanoid/generate');
+const { customAlphabet } = require('nanoid');
 
+const nanoid = customAlphabet(urlString, urlLength);
 manager.subscribe('removed');
 
-manager.on('message', async function() {
+manager.on('message', async function () {
     const count = await db.scard('genurls');
     if (count < 100) {
         // On every message, generate new 5000 urls if
@@ -16,7 +17,7 @@ manager.on('message', async function() {
     }
 });
 
-db.on('connect', async function() {
+db.on('connect', async function () {
     const prevUrlsCount = await db.scard('genurls');
     if (prevUrlsCount < 100) {
         // on connect (start), if previous urls count is less than 100
@@ -34,9 +35,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 function generateUrls(urlsToGenerate) {
-    const length = urlLength;
     for (let i = 0; i < urlsToGenerate; i++) {
-        const id = nanoid(urlString, length);
+        const id = nanoid();
         db.sadd('genurls', id);
     }
 }
