@@ -23,6 +23,7 @@
         "cross-env": "^7.0.3",
         "date-fns": "^2.18.0",
         "express": "^4.16.4",
+        "express-handlebars": "^5.2.1",
         "helmet": "^4.4.1",
         "ioredis": "^4.23.0",
         "multer": "^1.4.1",
