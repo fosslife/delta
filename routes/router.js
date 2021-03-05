@@ -74,6 +74,7 @@ function serve(record, res) {
                 res.end('Error while sending file, please contact admin');
             });
     } else if (record.type === 'url') {
+        logger.info(`redirecting to ${record.original}`);
         res.redirect(record.original);
     } else {
         res.end('Incorrect link or record is expired and cleaned by cron');
