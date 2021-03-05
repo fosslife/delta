@@ -44,7 +44,8 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label class="form-label" for="fileupload">Select a file</label>
-                                        <input class="form-input" type="file" id="fileupload" placeholder="Name">
+                                        <input class="form-input" @change="upload($event)" type="file" id="fileupload"
+                                            placeholder="Name">
                                     </div>
                                 </div>
                                 {{!-- <div class="card-footer">
@@ -85,6 +86,27 @@
             </div>
             <div id="pastebin">
                 {{!-- placeholder --}}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div x-data="{ showmodal: false }">
+    <div class="modal modal-sm" :class="{ 'active': showmodal }" id="modal-id">
+        <a href="#close" class="modal-overlay" aria-label="Close"></a>
+        <div class="modal-container">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Modal title</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    content
+                </div>
+            </div>
+            <div class="modal-footer">
+                footer
             </div>
         </div>
     </div>
