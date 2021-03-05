@@ -10,9 +10,10 @@ const path = require('path');
 const { promisify } = require('util');
 const { port, uploadpath, users } = require('./config');
 const logger = require('./core/logger');
-const { resolve } = require('path');
+// const { resolve } = require('path');
 const { NODE_ENV: env } = process.env;
 const uploads = require('./routes/router');
+const exphbs = require('express-handlebars');
 
 /**
  * Middlewares and inits
@@ -20,7 +21,12 @@ const uploads = require('./routes/router');
 // Initialize index by 1000
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(helmet());
+// app.use(helmet());
+
+// view
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
+// app.enable('view cache');
 
 express.response.sendFile = promisify(express.response.sendFile);
 
@@ -39,14 +45,15 @@ if (env === 'production') {
  * same for express, so if /favicon fails, it will try to
  * search for /favicon in URLs instead :(
  */
-app.get('/favicon.ico', (req, res) =>
-    res.sendFile(resolve(__dirname, './favicon.png'))
-);
+app.use(express.static('assets'));
+// app.get('/favicon.ico', (req, res) =>
+//     res.sendFile(resolve(__dirname, './favicon.png'))
+// );
 
 app.use('/', uploads);
 
 app.get('/', (req, res) => {
-    res.sendFile(resolve(__dirname, 'welcome.txt'));
+    res.render('index');
 });
 
 app.listen(port, () =>
