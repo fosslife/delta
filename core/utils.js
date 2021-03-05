@@ -17,6 +17,7 @@ function getExpiry(str) {
 }
 
 function auth(apikey) {
+    if (!apikey) return [];
     return users.find(e => e[1] === apikey);
 }
 
