@@ -7,11 +7,14 @@ const { auth, getExpiry, isAuthorizedUser } = require('../utils');
 
 const urlShortener = async (req, res) => {
     const URL = req.body.url;
+    logger.info('URL to shorten', URL);
     const API_KEY_HEADER = req.get('api-key');
     /* It's a workaround, it could be better */
     const [, , domain] = auth(API_KEY_HEADER);
+    logger.info('Domain found', domain);
     const responseStatus = isAuthorizedUser(API_KEY_HEADER);
     if (responseStatus === 200) {
+        logger.info('User is authorized');
         const contentType = req.get('Accept') || 'text/plain';
         logger.info(`User is authorised`);
         const specialURL = req.body.custom;
@@ -62,7 +65,7 @@ const urlShortener = async (req, res) => {
                 res.end(`${fullURL}\n`);
             }
         } else {
-            logger.error('User has given invalid URL');
+            logger.error('User has given invalid URL ' + URL);
             res.status(400).json({
                 status: 400,
                 message: 'Bad Request, URL in invalid'
