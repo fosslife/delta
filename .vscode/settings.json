@@ -1,6 +1,4 @@
 {
-    "eslint.enable": true,
     "deno.enable": false,
     "editor.formatOnSave": true
-    
 }
