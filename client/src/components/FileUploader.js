@@ -3,10 +3,20 @@ import { useState } from 'react';
 function FileUploader() {
     const [showToast, setShowToast] = useState(false);
     const [password, setPassword] = useState('');
+    const [expiry, setExpiry] = useState('');
     const [sucessMessage, setSuccessMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [showExpires, setShowExpires] = useState(false);
     const [file, setFile] = useState('');
     const [randomKey, setRandomkey] = useState(Math.random().toString(20));
+
+    const handleOnExpiresToggle = () => {
+        setShowExpires(!showExpires);
+    };
+
+    const handleOnExpiresChange = e => {
+        setExpiry(e.target.value);
+    };
 
     const handleOnPasswordChanged = e => {
         setPassword(e.target.value);
@@ -22,9 +32,9 @@ function FileUploader() {
     };
     const handleSubmit = async e => {
         const formData = new FormData();
-        console.log('File', file);
+        // console.log('File', file);
         if (!file) {
-            console.log('No file selected');
+            // console.log('No file selected');
             setShowToast(true);
             setSuccessMessage('Please Select a file to upload');
             return;
@@ -33,6 +43,10 @@ function FileUploader() {
         if (password) {
             console.log('attaching password', password);
             formData.append('pass', password);
+        }
+        if (expiry) {
+            console.log('adding expiry', expiry);
+            formData.append('expires', expiry);
         }
         const res = await fetch('/', {
             method: 'POST',
@@ -91,44 +105,65 @@ function FileUploader() {
                                                 data-content="Options"
                                             ></li>
                                             <li className="menu-item">
-                                                <div className="">
-                                                    <div className="columns">
-                                                        <div className="column">
-                                                            <label className="form-checkbox">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    onChange={
-                                                                        handleOnPasswordToggle
-                                                                    }
-                                                                />
-                                                                <i className="form-icon"></i>
-                                                                password
-                                                            </label>
-                                                        </div>
-                                                        {showPassword ? (
-                                                            <div className="column">
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-input"
-                                                                    placeholder="enter password"
-                                                                    onChange={
-                                                                        handleOnPasswordChanged
-                                                                    }
-                                                                    value={
-                                                                        password
-                                                                    }
-                                                                ></input>
-                                                            </div>
-                                                        ) : null}
+                                                <div className="columns">
+                                                    <div className="column">
+                                                        <label className="form-checkbox">
+                                                            <input
+                                                                type="checkbox"
+                                                                onChange={
+                                                                    handleOnPasswordToggle
+                                                                }
+                                                            />
+                                                            <i className="form-icon"></i>
+                                                            password
+                                                        </label>
                                                     </div>
+                                                    {showPassword ? (
+                                                        <div className="column">
+                                                            <input
+                                                                type="text"
+                                                                className="form-input"
+                                                                placeholder="enter password"
+                                                                onChange={
+                                                                    handleOnPasswordChanged
+                                                                }
+                                                                value={password}
+                                                            ></input>
+                                                        </div>
+                                                    ) : null}
                                                 </div>
                                             </li>
                                             <li className="menu-item">
-                                                <label className="form-checkbox">
-                                                    <input type="checkbox" />
-                                                    <i className="form-icon"></i>
-                                                    expires
-                                                </label>
+                                                <div className="columns">
+                                                    <div className="column">
+                                                        <label
+                                                            data-tooltip="eg: 2s/5m/3h/4d/1w/12M"
+                                                            className="form-checkbox tooltip tooltip-left"
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                onChange={
+                                                                    handleOnExpiresToggle
+                                                                }
+                                                            />
+                                                            <i className="form-icon"></i>
+                                                            expires
+                                                        </label>
+                                                    </div>
+                                                    {showExpires ? (
+                                                        <div className="column">
+                                                            <input
+                                                                type="text"
+                                                                className="form-input"
+                                                                placeholder="enter expiry"
+                                                                onChange={
+                                                                    handleOnExpiresChange
+                                                                }
+                                                                value={expiry}
+                                                            ></input>
+                                                        </div>
+                                                    ) : null}
+                                                </div>
                                             </li>
                                         </ul>
                                     </div>
