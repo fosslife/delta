@@ -92,6 +92,51 @@ function FileUploader() {
                                 <div className="card-title h5">
                                     <h3>Upload a file</h3>
                                 </div>
+                                {showToast ? (
+                                    <div
+                                        style={{ marginTop: '10px' }}
+                                        className="toast toast-primary"
+                                    >
+                                        {sucessMessage !==
+                                        'Please Select a file to upload' ? (
+                                            <div
+                                                style={{
+                                                    display: 'flex'
+                                                }}
+                                            >
+                                                <a
+                                                    href={sucessMessage}
+                                                    target="_new"
+                                                >
+                                                    {sucessMessage}{' '}
+                                                </a>
+                                                <div
+                                                    className="tooltip tooltip-right"
+                                                    data-tooltip={
+                                                        clipboardTooltipText
+                                                    }
+                                                    onClick={
+                                                        handleOnClipboardClick
+                                                    }
+                                                >
+                                                    <i
+                                                        onClick={() => {
+                                                            navigator.clipboard.writeText(
+                                                                sucessMessage
+                                                            );
+                                                        }}
+                                                        className="icon icon-copy "
+                                                        style={{
+                                                            margin: 'auto 5px'
+                                                        }}
+                                                    ></i>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div>{sucessMessage}</div>
+                                        )}
+                                    </div>
+                                ) : null}
                             </div>
                             <div className="card-body">
                                 <div className="form-group">
@@ -191,47 +236,6 @@ function FileUploader() {
                                 >
                                     Submit
                                 </button>
-                                {showToast ? (
-                                    <div
-                                        style={{ marginTop: '10px' }}
-                                        className="toast toast-primary"
-                                    >
-                                        {sucessMessage !==
-                                        'Please Select a file to upload' ? (
-                                            <div style={{ display: 'flex' }}>
-                                                <a
-                                                    href={sucessMessage}
-                                                    target="_new"
-                                                >
-                                                    {sucessMessage}{' '}
-                                                </a>
-                                                <div
-                                                    className="tooltip tooltip-right"
-                                                    data-tooltip={
-                                                        clipboardTooltipText
-                                                    }
-                                                    onClick={
-                                                        handleOnClipboardClick
-                                                    }
-                                                >
-                                                    <i
-                                                        onClick={() => {
-                                                            navigator.clipboard.writeText(
-                                                                sucessMessage
-                                                            );
-                                                        }}
-                                                        className="icon icon-copy "
-                                                        style={{
-                                                            margin: 'auto 5px'
-                                                        }}
-                                                    ></i>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <div>{sucessMessage}</div>
-                                        )}
-                                    </div>
-                                ) : null}
                             </div>
                         </div>
                     </div>
