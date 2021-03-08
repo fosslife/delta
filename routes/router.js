@@ -38,6 +38,7 @@ uploads.get('/:link', async (req, res) => {
     if (cache[`short:${request}`]) {
         serve(cache[`short:${request}`], res);
     } else {
+        if (request === 'favicon.ico') return;
         const record = await db.hgetall(`short:${request}`);
         if (!record.expires && !record.password) {
             // eslint thinks that it's a race condition. Smart.
