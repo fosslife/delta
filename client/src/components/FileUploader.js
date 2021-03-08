@@ -20,14 +20,6 @@ function FileUploader() {
         setShowExpires(!showExpires);
     };
 
-    const handleOnExpiresChange = e => {
-        setExpiry(e.target.value);
-    };
-
-    const handleOnPasswordChanged = e => {
-        setPassword(e.target.value);
-    };
-
     const handleOnPasswordToggle = e => {
         if (!e.target.checked) {
             setPassword('');
@@ -184,9 +176,12 @@ function FileUploader() {
                                                                 type="text"
                                                                 className="form-input"
                                                                 placeholder="enter password"
-                                                                onChange={
-                                                                    handleOnPasswordChanged
-                                                                }
+                                                                onChange={e => {
+                                                                    setPassword(
+                                                                        e.target
+                                                                            .value
+                                                                    );
+                                                                }}
                                                                 value={password}
                                                             ></input>
                                                         </div>
@@ -216,9 +211,12 @@ function FileUploader() {
                                                                 type="text"
                                                                 className="form-input"
                                                                 placeholder="enter expiry"
-                                                                onChange={
-                                                                    handleOnExpiresChange
-                                                                }
+                                                                onChange={e => {
+                                                                    setExpiry(
+                                                                        e.target
+                                                                            .value
+                                                                    );
+                                                                }}
                                                                 value={expiry}
                                                             ></input>
                                                         </div>
