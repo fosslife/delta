@@ -13,7 +13,10 @@ function FileUploader() {
         'Copy to clipboard'
     );
 
-    const handleOnExpiresToggle = () => {
+    const handleOnExpiresToggle = e => {
+        if (!e.target.checked) {
+            setExpiry('');
+        }
         setShowExpires(!showExpires);
     };
 
@@ -25,7 +28,10 @@ function FileUploader() {
         setPassword(e.target.value);
     };
 
-    const handleOnPasswordToggle = () => {
+    const handleOnPasswordToggle = e => {
+        if (!e.target.checked) {
+            setPassword('');
+        }
         setShowPassword(!showPassword);
     };
     const handleUpload = async e => {
