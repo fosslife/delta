@@ -9,6 +9,9 @@ function FileUploader() {
     const [showExpires, setShowExpires] = useState(false);
     const [file, setFile] = useState('');
     const [randomKey, setRandomkey] = useState(Math.random().toString(20));
+    const [clipboardTooltipText, setClipboardTooltipText] = useState(
+        'Copy to clipboard'
+    );
 
     const handleOnExpiresToggle = () => {
         setShowExpires(!showExpires);
@@ -29,6 +32,12 @@ function FileUploader() {
         e.preventDefault();
         setFile(e.target.files[0]);
         // const files = e.target.files[0];
+    };
+    const handleOnClipboardClick = () => {
+        setClipboardTooltipText('Copied');
+        setTimeout(() => {
+            setClipboardTooltipText('Copy to clipboard');
+        }, 2000);
     };
     const handleSubmit = async e => {
         const formData = new FormData();
@@ -183,12 +192,35 @@ function FileUploader() {
                                     >
                                         {sucessMessage !==
                                         'Please Select a file to upload' ? (
-                                            <a
-                                                href={sucessMessage}
-                                                target="_new"
-                                            >
-                                                {sucessMessage}
-                                            </a>
+                                            <div style={{ display: 'flex' }}>
+                                                <a
+                                                    href={sucessMessage}
+                                                    target="_new"
+                                                >
+                                                    {sucessMessage}{' '}
+                                                </a>
+                                                <div
+                                                    className="tooltip tooltip-right"
+                                                    data-tooltip={
+                                                        clipboardTooltipText
+                                                    }
+                                                    onClick={
+                                                        handleOnClipboardClick
+                                                    }
+                                                >
+                                                    <i
+                                                        onClick={() => {
+                                                            navigator.clipboard.writeText(
+                                                                sucessMessage
+                                                            );
+                                                        }}
+                                                        className="icon icon-copy "
+                                                        style={{
+                                                            margin: 'auto 5px'
+                                                        }}
+                                                    ></i>
+                                                </div>
+                                            </div>
                                         ) : (
                                             <div>{sucessMessage}</div>
                                         )}
