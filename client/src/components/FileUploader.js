@@ -131,31 +131,34 @@ function FileUploader() {
                                 ) : null}
                             </div>
                             <div className="card-body">
-                                <div className="form-group">
-                                    <label
-                                        className="form-label"
-                                        htmlFor="fileupload"
-                                    >
-                                        Select a file
-                                    </label>
-                                    <input
-                                        className="form-input"
-                                        onChange={handleUpload}
-                                        key={randomKey}
-                                        type="file"
-                                        id="fileupload"
-                                        placeholder="Name"
-                                    />
-                                </div>
-                            </div>
-                            <div className="card-footer">
                                 <div className="columns">
-                                    <div className="column col-5">
+                                    <div className="column col-6">
+                                        <div className="form-group">
+                                            <label
+                                                className="form-label"
+                                                htmlFor="fileupload"
+                                            >
+                                                Select a file
+                                            </label>
+                                            <input
+                                                className="form-input"
+                                                onChange={handleUpload}
+                                                key={randomKey}
+                                                type="file"
+                                                id="fileupload"
+                                                placeholder="Name"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="column col-6"
+                                        style={{ marginTop: '30px' }}
+                                    >
                                         <ul className="menu">
-                                            <li
+                                            {/* <li
                                                 className="divider"
                                                 data-content="Options"
-                                            ></li>
+                                            ></li> */}
                                             <li className="menu-item">
                                                 <div className="columns">
                                                     <div className="column">
@@ -170,26 +173,6 @@ function FileUploader() {
                                                             password
                                                         </label>
                                                     </div>
-                                                    {showPassword ? (
-                                                        <div className="column">
-                                                            <input
-                                                                type="text"
-                                                                className="form-input"
-                                                                placeholder="enter password"
-                                                                onChange={e => {
-                                                                    setPassword(
-                                                                        e.target
-                                                                            .value
-                                                                    );
-                                                                }}
-                                                                value={password}
-                                                            ></input>
-                                                        </div>
-                                                    ) : null}
-                                                </div>
-                                            </li>
-                                            <li className="menu-item">
-                                                <div className="columns">
                                                     <div className="column">
                                                         <label
                                                             data-tooltip="eg: 2s/5m/3h/4d/1w/12M"
@@ -205,8 +188,29 @@ function FileUploader() {
                                                             expires
                                                         </label>
                                                     </div>
-                                                    {showExpires ? (
-                                                        <div className="column">
+                                                </div>
+                                            </li>
+                                            <li className="menu-item">
+                                                <div className="columns">
+                                                    <div className="column ">
+                                                        {showPassword ? (
+                                                            <input
+                                                                type="text"
+                                                                className="form-input"
+                                                                placeholder="enter password"
+                                                                onChange={e => {
+                                                                    setPassword(
+                                                                        e.target
+                                                                            .value
+                                                                    );
+                                                                }}
+                                                                value={password}
+                                                            ></input>
+                                                        ) : null}
+                                                    </div>
+
+                                                    <div className="column">
+                                                        {showExpires ? (
                                                             <input
                                                                 type="text"
                                                                 className="form-input"
@@ -219,14 +223,13 @@ function FileUploader() {
                                                                 }}
                                                                 value={expiry}
                                                             ></input>
-                                                        </div>
-                                                    ) : null}
+                                                        ) : null}
+                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-
                                 <button
                                     style={{ marginTop: '15px' }}
                                     className="btn btn-success"
@@ -235,6 +238,15 @@ function FileUploader() {
                                     Submit
                                 </button>
                             </div>
+                            {/* <div className="card-footer">
+                                <button
+                                    style={{ marginTop: '15px' }}
+                                    className="btn btn-success"
+                                    onClick={handleSubmit}
+                                >
+                                    Submit
+                                </button>
+                            </div> */}
                         </div>
                     </div>
                 </div>
