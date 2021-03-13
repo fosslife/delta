@@ -78,7 +78,7 @@ function FileUploader() {
         <div id="fileuploader">
             <div className="container mt-2">
                 <div className="columns">
-                    <div className="column col-12">
+                    <div className="column col-10 col-mx-auto">
                         <div className="card">
                             <div className="card-header">
                                 <div className="card-title h5">
@@ -132,7 +132,7 @@ function FileUploader() {
                             </div>
                             <div className="card-body">
                                 <div className="columns">
-                                    <div className="column col-6">
+                                    <div className="column col-12">
                                         <div className="form-group">
                                             <label
                                                 className="form-label"
@@ -150,11 +150,13 @@ function FileUploader() {
                                             />
                                         </div>
                                     </div>
-                                    <div
-                                        className="column col-6"
-                                        style={{ marginTop: '30px' }}
-                                    >
-                                        <ul className="menu">
+                                </div>
+                                <div className="columns">
+                                    <div className="column col-12">
+                                        <ul
+                                            className="menu"
+                                            style={{ marginTop: '15px' }}
+                                        >
                                             {/* <li
                                                 className="divider"
                                                 data-content="Options"
@@ -238,15 +240,6 @@ function FileUploader() {
                                     Submit
                                 </button>
                             </div>
-                            {/* <div className="card-footer">
-                                <button
-                                    style={{ marginTop: '15px' }}
-                                    className="btn btn-success"
-                                    onClick={handleSubmit}
-                                >
-                                    Submit
-                                </button>
-                            </div> */}
                         </div>
                     </div>
                 </div>
