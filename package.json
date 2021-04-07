@@ -8,6 +8,7 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
+        "build": "node build.js",
         "dev": "cross-env NODE_ENV=development nodemon index.js --ignore 'storage'",
         "start": "cross-env NODE_ENV=production REDIS_HOST=localhost node index.js"
     },
