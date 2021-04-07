@@ -15,22 +15,24 @@ const { NODE_ENV: env } = process.env;
 const uploads = require('./routes/router');
 // const exphbs = require('express-handlebars');
 
+const isProduction = env === 'production';
 /**
  * Middlewares and inits
  */
-// Initialize index by 1000
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-// app.use(helmet());
-
-// view
-// app.engine('handlebars', exphbs());
-// app.set('view engine', 'handlebars');
-// app.enable('view cache');
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            'script-src': ["'self'", "'unsafe-inline'"]
+        }
+    })
+);
 
 express.response.sendFile = promisify(express.response.sendFile);
 
-if (env === 'production') {
+if (isProduction) {
     const job = require('./core/cron');
     job.start();
     logger.info('Cronjob starting in production mode');
@@ -39,16 +41,9 @@ if (env === 'production') {
  * Router
  */
 
-/**
- * Note that favicon is kinda important here
- * as all the routes are analogues /, /favicon, /:url are
- * same for express, so if /favicon fails, it will try to
- * search for /favicon in URLs instead :(
- */
-// app.use(express.static('assets'));
-// app.get('/favicon.ico', (req, res) =>
-//     res.sendFile(resolve(__dirname, './favicon.png'))
-// );
+if (isProduction) {
+    app.use(express.static('./client/build'));
+}
 
 app.use('/', uploads);
 
