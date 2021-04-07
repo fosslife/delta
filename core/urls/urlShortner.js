@@ -9,11 +9,11 @@ const urlShortener = async (req, res) => {
     const URL = req.body.url;
     logger.info('URL to shorten', URL);
     const API_KEY_HEADER = req.get('api-key');
-    /* It's a workaround, it could be better */
-    const [, , domain] = auth(API_KEY_HEADER);
-    logger.info('Domain found', domain);
     const responseStatus = isAuthorizedUser(API_KEY_HEADER);
     if (responseStatus === 200) {
+        /* It's a workaround, it could be better */
+        const [, , domain] = auth(API_KEY_HEADER);
+        logger.info('Domain found', domain);
         logger.info('User is authorized');
         const contentType = req.get('Accept') || 'text/plain';
         logger.info(`User is authorised`);
