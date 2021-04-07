@@ -1,4 +1,5 @@
-import { useState } from 'react';
+/* eslint-disable jsx-a11y/anchor-has-content */
+import { useState, useEffect } from 'react';
 
 function FileUploader() {
     const [showToast, setShowToast] = useState(false);
@@ -9,10 +10,20 @@ function FileUploader() {
     const [showExpires, setShowExpires] = useState(false);
     const [file, setFile] = useState('');
     const [randomKey, setRandomkey] = useState(Math.random().toString(20));
+    const [modelAcive, setModalActive] = useState(false);
+    const [apikey, setApiKey] = useState('');
     const [clipboardTooltipText, setClipboardTooltipText] = useState(
         'Copy to clipboard'
     );
 
+    useEffect(() => {
+        const storedKey = localStorage.getItem('api-key');
+        if (!storedKey) {
+            setApiKey(false);
+        } else {
+            setApiKey(storedKey);
+        }
+    }, []);
     const handleOnExpiresToggle = e => {
         if (!e.target.checked) {
             setExpiry('');
@@ -59,7 +70,7 @@ function FileUploader() {
             method: 'POST',
             headers: {
                 'x-delta-type': 'file',
-                'api-key': 'spark1234'
+                'api-key': apikey
             },
             body: formData
         })
@@ -84,6 +95,15 @@ function FileUploader() {
                                 <div className="card-title h5">
                                     <h3>Upload a file</h3>
                                 </div>
+                                {!apikey ? (
+                                    <div className="columns">
+                                        <div className="column">
+                                            <div className="toast toast-warning">
+                                                !! API key is not set !!
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : null}
                                 {showToast ? (
                                     <div
                                         style={{ marginTop: '10px' }}
@@ -234,13 +254,74 @@ function FileUploader() {
                                 </div>
                                 <button
                                     style={{ marginTop: '15px' }}
-                                    className="btn btn-success"
+                                    className="btn btn-primary"
                                     onClick={handleSubmit}
                                 >
                                     Submit
                                 </button>
+                                <button
+                                    style={{ marginTop: '15px' }}
+                                    className="btn btn-primary ml-2"
+                                    onClick={() => setModalActive(true)}
+                                >
+                                    Set or change key
+                                </button>
+                                <button
+                                    style={{ marginTop: '15px' }}
+                                    className="btn btn-primary ml-2"
+                                    onClick={() => {
+                                        localStorage.removeItem('api-key');
+                                        setApiKey('');
+                                    }}
+                                >
+                                    Clear stored key
+                                </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Modal ================ */}
+            <div
+                className={`modal ${modelAcive ? 'active' : ''}`}
+                id="modal-id"
+            >
+                <a
+                    href="#close"
+                    className="modal-overlay"
+                    aria-label="Close"
+                ></a>
+                <div className="modal-container">
+                    <div className="modal-header">
+                        <a
+                            href="#close"
+                            className="btn btn-clear float-right"
+                            aria-label="Close"
+                            onClick={() => setModalActive(false)}
+                        ></a>
+                        <div className="modal-title h5">set api key</div>
+                    </div>
+                    <div className="modal-body">
+                        <div className="content">
+                            <input
+                                type="text"
+                                onChange={e => {
+                                    setApiKey(e.target.value);
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className="modal-footer">
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => {
+                                setModalActive(false);
+                                localStorage.setItem('api-key', apikey);
+                            }}
+                        >
+                            Set key
+                        </button>
                     </div>
                 </div>
             </div>
