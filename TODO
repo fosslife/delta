@@ -1,2 +1,4 @@
 custom url for files
 extract one line methods to inline inside tags
+refactor ui
+npm i both client and server, postinstall? // npm --prefix ./some_project install ./some_project
